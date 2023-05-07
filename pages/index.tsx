@@ -18,8 +18,7 @@ export default function Home() {
           </div>
           <div className="mt-[12px] flex flex-col items-center">
             <h1 className=" text-lg">
-              KESSHA 46TH ANNUAL NATIONAL CONFERENCE OF PRINCIPALS AND
-              EXHIBITION
+              KSSHA 46TH ANNUAL NATIONAL CONFERENCE OF PRINCIPALS AND EXHIBITION
             </h1>
             <p className="text-lg opacity-60">
               26th to 30th June 2023 at the Sheikh Zayed Hall in Mombasa.

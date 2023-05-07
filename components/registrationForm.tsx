@@ -127,7 +127,7 @@ export default function RegistrationForm({
         <Checkbox
           confirmedTSCDeduction={confirmedTSCDeduction}
           setConfirmedTSCDeduction={setConfirmedTSCDeduction}
-          checkboxLabel="Lorem ipsum dolor sit amet"
+          checkboxLabel="Accept terms and conditions"
         />
         <div className="flex flex-col items-center">
           <Button text="Register" />
