@@ -24,8 +24,6 @@ export default function Delegates() {
       setCodeError("Please provide payment code");
       return;
     }
-
-    console.log(code);
   }
   return (
     <>

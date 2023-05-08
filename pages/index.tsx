@@ -36,6 +36,7 @@ export default function Home() {
             <p>Delegate Registration</p>
           </div>
           <div
+            onClick={() => setShowDelegates(false)}
             className={`w-1/2 flex flex-col items-center py-[10px] rounded-tr-[8px] cursor-pointer ${
               showDelegates ? "" : " bg-[#514887] text-white"
             }`}

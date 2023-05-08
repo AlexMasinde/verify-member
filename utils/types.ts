@@ -14,6 +14,15 @@ export type Errors = {
   phoneNumber?: string;
 };
 
+export type ExhibitorErrors = {
+  name?: string;
+  description?: string;
+  contactPerson?: string;
+  email?: string;
+  phoneNumber?: string;
+  spaceReserved?: string;
+};
+
 export type UserData = {
   name: string;
   school: string;
@@ -22,4 +31,23 @@ export type UserData = {
   subCounty: string;
   email: string;
   phoneNumber: string;
+};
+
+export type ExhibitorData = {
+  name: string;
+  email: string;
+  description: string;
+  spaceReserved: string;
+  phoneNumber: string;
+  contactPerson: string;
+};
+
+export type SpaceData = {
+  price: string;
+  tent: string;
+  tables: string;
+  chairs: string;
+  tags: string;
+  availableSpaces: string;
+  id: string;
 };
