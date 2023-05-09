@@ -1,6 +1,30 @@
-import { ExhibitorData } from "@/utils/types";
+import { ExhibitorData, LoginData, LoginErrors } from "@/utils/types";
 import { counties } from "./counties";
 import { Errors, UserData, ExhibitorErrors } from "./types";
+
+export function loginValidate(loginData: LoginData) {
+  const errors: LoginErrors = {};
+  const { email, password } = loginData;
+
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+  if (email.trim() === "") {
+    errors.email = "Please enter your email address";
+  } else if (!emailRegex.test(email)) {
+    errors.email = "Please provide a valid email address";
+  }
+
+  if (password.trim() === "") {
+    errors.password = "Please enter your email address";
+  } else if (password.length < 6) {
+    errors.password = "Password should be at least 6 characters";
+  }
+
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1,
+  };
+}
 
 export function exhibitorValidate(exhibitorData: ExhibitorData) {
   const errors: ExhibitorErrors = {};

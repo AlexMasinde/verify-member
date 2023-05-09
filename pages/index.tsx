@@ -8,7 +8,7 @@ export default function Home() {
   const [showDelegates, setShowDelegates] = useState(true);
   return (
     <main className="lg:bg-blue-100 min-h-screen pat relative lg:pt-[10px]">
-      <div className=" pb-[80px] lg:w-[60%] mx-auto z-10 lg:rounded-[8px]">
+      <div className="pb-[80px] lg:w-[60%] mx-auto z-10 lg:rounded-[8px]">
         <div className="w-full mx-auto flex flex-col items-center bg-white rounded-[6px]  py-[16px]">
           <div className="max-w-[280px] flex flex-row items-center">
             <Image src={logo} alt="KSSHA logo" />

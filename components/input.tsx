@@ -5,11 +5,13 @@ export default function Input({
   onChange,
   error,
   value,
+  type,
 }: {
   inputLabel: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   error: string;
   value: string;
+  type?: string;
 }) {
   return (
     <div className="mt-[12px]">
@@ -23,7 +25,7 @@ export default function Input({
       <input
         value={value}
         onChange={onChange}
-        type="text"
+        type={type ? type : "text"}
         className="border border-gray-300 px-[18px] py-2 rounded-[6px] outline-none w-full lg:w-400 sm:ml-[0%]"
       />
     </div>

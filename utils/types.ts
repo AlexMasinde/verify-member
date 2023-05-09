@@ -23,6 +23,16 @@ export type ExhibitorErrors = {
   spaceReserved?: string;
 };
 
+export type LoginErrors = {
+  email?: string;
+  password?: string;
+};
+
+export type LoginData = {
+  email: string;
+  password: string;
+};
+
 export type UserData = {
   name: string;
   school: string;

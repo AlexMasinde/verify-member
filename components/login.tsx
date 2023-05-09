@@ -1,0 +1,72 @@
+import { ChangeEvent, FormEvent, useState } from "react";
+
+import { loginValidate } from "@/utils/validators";
+
+import Image from "next/image";
+import { LoginErrors } from "@/utils/types";
+import Button from "./button";
+import Input from "./input";
+import logo from "../public/images/kssha_logo.png";
+
+export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [inputErrors, setInputErrors] = useState<LoginErrors>({
+    email: "",
+    password: "",
+  });
+  function handlePassword(event: ChangeEvent<HTMLInputElement>) {
+    setPassword(event.target.value);
+    setInputErrors({ ...inputErrors, password: "" });
+  }
+
+  function handleEmail(event: ChangeEvent<HTMLInputElement>) {
+    setEmail(event.target.value);
+    setInputErrors({ ...inputErrors, email: "" });
+  }
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const { errors, valid } = loginValidate({ email, password });
+
+    if (!valid) {
+      setInputErrors(errors);
+      return;
+    }
+  }
+
+  return (
+    <div className="w-full h-[100vh] flex flex-col items-center justify-center pat">
+      <div className="md:w-[400px] shadow-lg md:shadow-[rgba(81, 72, 135, 1)] bg-white rounded-[8px] p-[20px] w-full xs:h-full md:h-fit">
+        <div className="flex flex-col items-center">
+          <Image src={logo} alt="KSSHA logo" />
+          {/* <p className="mt-[20px] font-bold text-md">Admin Login</p> */}
+          <p className="text-center text-sm text-gray-400 mt-[20px]">
+            Enter your email and password to access admin dashboard
+          </p>
+        </div>
+        <form onSubmit={handleSubmit}></form>
+        <Input
+          inputLabel="Email"
+          onChange={handleEmail}
+          error={inputErrors?.email ? inputErrors?.email : ""}
+          value={email}
+        />
+        <Input
+          inputLabel="Password"
+          onChange={handlePassword}
+          error={inputErrors?.password ? inputErrors?.password : ""}
+          value={password}
+          type="password"
+        />
+        <div className="flex flex-col items-center mt-[10px]">
+          <Button text="Login" disabled={loading} />
+        </div>
+        <form />
+      </div>
+    </div>
+  );
+}
