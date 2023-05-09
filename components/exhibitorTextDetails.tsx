@@ -18,8 +18,8 @@ export default function ExhibitorTextDetails() {
               />
             </svg>
             <p className="ml-4">
-              Provide a accurate details about your organization including the
-              desired contact person
+              Provide a accurate contact details about your organization
+              including a preferred contact person
             </p>
           </li>
           <li className="flex items-center">
@@ -53,6 +53,23 @@ export default function ExhibitorTextDetails() {
             <p className="ml-4">
               Select the space that you would like to reserve from the three
               available alternatives
+            </p>
+          </li>
+          <li className="flex items-center">
+            <svg
+              className="h-6 w-6 flex-none fill-[#fff] stroke-[#514887] stroke-2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="11" />
+              <path
+                d="m8 13 2.165 2.165a1 1 0 0 0 1.521-.126L16 9"
+                fill="none"
+              />
+            </svg>
+            <p className="ml-4">
+              Further details about the reservation, including payment, will be
+              shared through the provided email address and phone
             </p>
           </li>
           <li className="flex items-center">

@@ -1,4 +1,4 @@
-import { ExhibitorData, SpaceData } from "@/utils/types";
+import { ExhibitorData, ExhibitorErrors, SpaceData } from "@/utils/types";
 
 export default function SpacesDropdown({
   selectedSpace,
@@ -6,16 +6,21 @@ export default function SpacesDropdown({
   setShowSpacesDropdown,
   setExhibitorData,
   exhibitorData,
+  inputErrors,
+  setInputErrors,
 }: {
   selectedSpace: SpaceData | null;
   setSelectedSpace: (value: SpaceData) => void;
   setShowSpacesDropdown: (value: boolean) => void;
   setExhibitorData: (value: ExhibitorData) => void;
   exhibitorData: ExhibitorData;
+  inputErrors: ExhibitorErrors;
+  setInputErrors: (value: ExhibitorErrors) => void;
 }) {
   function handleClick(spaceData: SpaceData) {
     setSelectedSpace(spaceData);
     setExhibitorData({ ...exhibitorData, spaceReserved: spaceData.id });
+    setInputErrors({ ...inputErrors, spaceReserved: "" });
     setShowSpacesDropdown(false);
   }
   const spaces: SpaceData[] = [

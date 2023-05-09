@@ -15,13 +15,14 @@ export default function Exhibitors() {
     email: "",
     spaceReserved: "",
   });
+
   return (
     <>
       <ExhibitorTextDetails />
       <div className="w-full lg:w-1/2 max-w-md mx-auto lg:mx-0 lg:px-[20px] xs:px-[5%] sm:px-[0%]">
         <ExhibitorRegistrationForm
           exhibitorData={exhibitorData}
-          setExhibitorData={setExhibitorData} 
+          setExhibitorData={setExhibitorData}
         />
       </div>
     </>
