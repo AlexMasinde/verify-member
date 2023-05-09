@@ -47,7 +47,16 @@ export default function TextDetails() {
                 <path d="m8 13 2.165 2.165a1 1 0 0 0 1.521-.126L16 9" fill="none" />
               </svg>
               <p className="ml-4">
-               Once done, you will receive your ticket for the conference in your email  
+               Once done, you will receive your ticket for the conference in the provided email address  
+              </p>
+            </li>
+          <li className="flex items-center">
+              <svg className="h-6 w-6 flex-none fill-[#fff] stroke-[#514887] stroke-2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="11" />
+                <path d="m8 13 2.165 2.165a1 1 0 0 0 1.521-.126L16 9" fill="none" />
+              </svg>
+              <p className="ml-4">
+               In case you are deduced monthly contributions to the Association by TSC, check the box at the end of the form. Otherwise, leave it empty  
               </p>
             </li>
           </ul>
