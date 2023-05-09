@@ -89,7 +89,7 @@ export default function ExhibitorRegistrationForm({
       setSelectedSpace(null);
     } catch (err: any) {
       if (err.code === "ERR_NETWORK") {
-        setErrorMessage("Error completing registration! Try again later");
+        setErrorMessage("Error completing registration. Try again later");
       } else {
         setErrorMessage(err.response.data.error.message);
       }
