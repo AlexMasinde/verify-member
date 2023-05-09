@@ -9,6 +9,7 @@ import SpacesDropdown from "./spacesDropdown";
 import { exhibitorValidate } from "@/utils/validators";
 import postDataWithRetries from "@/utils/request";
 import delay from "@/utils/delay";
+import useSpaces from "@/hooks/getSpaces";
 
 export default function ExhibitorRegistrationForm({
   exhibitorData,
@@ -24,6 +25,17 @@ export default function ExhibitorRegistrationForm({
   const [errorMessage, setErrorMessage] = useState("");
 
   const [selectedSpace, setSelectedSpace] = useState<SpaceData | null>(null);
+
+  const {
+    spaces: spacesDetails,
+    loading: loadingSpaces,
+    error: errorSpaces,
+  } = useSpaces();
+
+  const listOfSpaces = spacesDetails.map((space: any) => {
+    const attributes = space.attributes;
+    return attributes;
+  });
 
   function handleName(event: React.ChangeEvent<HTMLInputElement>) {
     setExhibitorData({ ...exhibitorData, name: event.target.value });
@@ -170,6 +182,7 @@ export default function ExhibitorRegistrationForm({
               exhibitorData={exhibitorData}
               inputErrors={inputErrors}
               setInputErrors={setInputErrors}
+              listOfSpaces={listOfSpaces}
             />
           ) : null}
         </div>

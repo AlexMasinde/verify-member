@@ -8,6 +8,7 @@ export default function SpacesDropdown({
   exhibitorData,
   inputErrors,
   setInputErrors,
+  listOfSpaces,
 }: {
   selectedSpace: SpaceData | null;
   setSelectedSpace: (value: SpaceData) => void;
@@ -16,13 +17,16 @@ export default function SpacesDropdown({
   exhibitorData: ExhibitorData;
   inputErrors: ExhibitorErrors;
   setInputErrors: (value: ExhibitorErrors) => void;
+  listOfSpaces: any;
 }) {
-  function handleClick(spaceData: SpaceData) {
+  function handleClick(spaceData: SpaceData, availableSpaces: any) {
+    if (availableSpaces === 0) return;
     setSelectedSpace(spaceData);
     setExhibitorData({ ...exhibitorData, spaceReserved: spaceData.id });
     setInputErrors({ ...inputErrors, spaceReserved: "" });
     setShowSpacesDropdown(false);
   }
+
   const spaces: SpaceData[] = [
     {
       price: "150,000",
@@ -56,13 +60,20 @@ export default function SpacesDropdown({
   return (
     <div>
       {spaces.map((space) => {
+        const similarSpaces = listOfSpaces.filter(
+          (fetchedSpace: any) => fetchedSpace.space === space.id
+        );
+
+        const availableSpaces =
+          similarSpaces.length > 0 ? similarSpaces[0].slotsAvailable : "";
+
         return (
           <div
             className="mt-[10px] hover:opacity-50 hover:cursor-pointer pb-4"
             key={space.id}
-            onClick={() => handleClick(space)}
+            onClick={() => handleClick(space, availableSpaces)}
           >
-            <DropDownItem spaceData={space} />
+            <DropDownItem spaceData={space} availableSpaces={availableSpaces} />
           </div>
         );
       })}
@@ -70,9 +81,17 @@ export default function SpacesDropdown({
   );
 }
 
-function DropDownItem({ spaceData }: { spaceData: SpaceData }) {
+function DropDownItem({
+  spaceData,
+  availableSpaces,
+}: {
+  spaceData: SpaceData;
+  availableSpaces: any;
+}) {
+  const noSpaces = availableSpaces === 0;
+
   return (
-    <div>
+    <div className={`${noSpaces ? "opacity-50" : ""}`}>
       <p className="font-bold text-sm">
         TENTS ({spaceData.tent}) {spaceData.price}/-
       </p>
@@ -85,9 +104,11 @@ function DropDownItem({ spaceData }: { spaceData: SpaceData }) {
       <p className="text-sm pt-[4px]">
         iii) Tags...................... {spaceData.tags}
       </p>
-      <p className="font-bold text-sm pt-[4px]">
-        SPACES AVAILABLE - {spaceData.availableSpaces}
-      </p>
+      {availableSpaces ? (
+        <p className="font-bold text-sm pt-[4px]">
+          SPACES AVAILABLE - {availableSpaces}
+        </p>
+      ) : null}
     </div>
   );
 }
