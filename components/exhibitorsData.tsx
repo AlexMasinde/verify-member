@@ -8,7 +8,6 @@ import ModalComponent from "./modalComponent";
 import { api } from "@/api";
 
 import { ExhibitorResponse } from "@/utils/types";
-import { useRouter } from "next/router";
 import DashboardTop from "./dashboardTop";
 import SearchInput from "./searchInput";
 
@@ -22,8 +21,6 @@ export default function ExhibitorsData() {
     dashSuccess,
     dispatch,
   } = useExhibitorContext();
-
-  const router = useRouter();
 
   const fetchError = !loading && error;
   const noExhibitors = !loading && !error && exhibitors.length === 0;
@@ -76,7 +73,7 @@ export default function ExhibitorsData() {
   }, []);
 
   return (
-    <div className="pat h-[100vh] flex flex-col items-center">
+    <div className="pat min-h-[100vh] flex flex-col items-center pb-8">
       <DashboardTop />
       <div className="bg-white w-[95%] mx-4 rounded-lg shadow-lg shadow-[rgba(81, 72, 135, 1)] p-[29px]">
         <div className="flex justify-between mb-[24px]">

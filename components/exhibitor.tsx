@@ -2,8 +2,6 @@ import { useExhibitorContext } from "@/contexts/exhibitorContext";
 import delay from "@/utils/delay";
 import postDataWithRetries from "@/utils/request";
 import { Exhibitor } from "@/utils/types";
-import { useState } from "react";
-import Button from "./button";
 
 export default function Exhibitor({
   exhibitor,
@@ -71,6 +69,7 @@ export default function Exhibitor({
           payload: err.response.data.error.message,
         });
       }
+      setLoadingExhibitorAction(false);
       setTimeout(() => {
         dispatch({ type: "SET_DASH_ERROR", payload: "" });
       }, 5000);
@@ -92,8 +91,7 @@ export default function Exhibitor({
         type: "SET_DASH_SUCCESS",
         payload: "Exhibitor reservation rejected",
       });
-      await delay(5000);
-      dispatch({ type: "SET_DASH_SUCCESS", payload: "" });
+      setLoadingExhibitorAction(false);
       dispatch({
         type: "UPDATE_EXHIBITOR",
         payload: {
@@ -101,6 +99,8 @@ export default function Exhibitor({
           reservationStatus: "rejected",
         },
       });
+      await delay(4000);
+      dispatch({ type: "SET_DASH_SUCCESS", payload: "" });
     } catch (err: any) {
       if (err.code === "ERR_NETWORK") {
         dispatch({
@@ -116,11 +116,10 @@ export default function Exhibitor({
           payload: err.response.data.error.message,
         });
       }
+      setLoadingExhibitorAction(false);
       setTimeout(() => {
         dispatch({ type: "SET_DASH_ERROR", payload: "" });
-      }, 5000);
-    } finally {
-      setLoadingExhibitorAction(false);
+      }, 4000);
     }
   }
 
@@ -141,29 +140,24 @@ export default function Exhibitor({
 
       <td className="border-b py-4">
         {status === "pending" ? (
-          <div
-            className="flex justify-end"
-            aria-disabled={loadingExhibitorAction}
-          >
-            <div onClick={acceptExhibitor}>
-              <Button
-                text="Accept"
-                disabled={loadingExhibitorAction}
-                textColor="#1BC5BD"
-                backgroundColor="#C9F7F5"
-              />
+          <div className="flex justify-end">
+            <div
+              onClick={acceptExhibitor}
+              className={`${
+                loadingExhibitorAction ? "opacity-80" : ""
+              } bg-[#C9F7F5] text-[#1BC5BD] px-8 rounded-md flex flex-col justify-center hover:opacity-70 py-2`}
+              aria-disabled={loadingExhibitorAction}
+            >
+              <p className="text-sm">Accept</p>
             </div>
             <div
-              className="ml-[24px] flex flex-col items-stretch"
+              className={`${
+                loadingExhibitorAction ? "opacity-80" : ""
+              } bg-[#FFEDED] text-[#DC312D] px-8 rounded-md flex flex-col justify-center hover:opacity-70 ml-4 py-2`}
               aria-disabled={loadingExhibitorAction}
               onClick={rejectExhibitor}
             >
-              <Button
-                text="Reject"
-                disabled={loadingExhibitorAction}
-                textColor="#DC312D"
-                backgroundColor="#FFEDED"
-              />
+              <p className="text-sm">Reject</p>
             </div>
           </div>
         ) : (

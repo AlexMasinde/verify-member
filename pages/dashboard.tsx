@@ -1,5 +1,5 @@
-import ExhibitorsData from "@/components/exhibitorsData";
 import ExhibitorsContainer from "@/components/exhibitorsContainer";
+import ExhibitorsData from "@/components/exhibitorsData";
 import ExhibitorContextProvider, {
   useExhibitorContext,
 } from "@/contexts/exhibitorContext";

@@ -137,7 +137,7 @@ export default function RegistrationForm({
           handleChange={handleCheckbox}
           checkboxLabel="Are you deducted monthly contributions to the Association by TSC"
         />
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center mt-2">
           <Button text="Submit" disabled={loading} />
         </div>
       </form>
