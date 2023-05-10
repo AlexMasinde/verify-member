@@ -10,11 +10,11 @@ export default function Home() {
     <main className="lg:bg-blue-100 min-h-screen pat relative lg:pt-[10px]">
       <div className="pb-[80px] lg:w-[60%] mx-auto z-10 lg:rounded-[8px]">
         <div className="w-full mx-auto flex flex-col items-center bg-white rounded-[6px]  py-[16px]">
-          <div className="max-w-[280px] flex flex-row items-center">
-            <Image src={logo} alt="KSSHA logo" />
-            <h1 className="ml-[10px] text-lg leading-5">
-              Kenya Secondary Schools Heads Association
-            </h1>
+          <div className="width-[fit-content] m-[auto]">
+            <img
+              src="https://res.cloudinary.com/db7w5helg/image/upload/v1683731506/kssha_logo_avbyuj.png"
+              alt="KSSHA Logo"
+            />
           </div>
           <div className="mt-[12px] flex flex-col items-center">
             <h1 className=" text-lg">

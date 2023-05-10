@@ -1,22 +1,83 @@
 import { useExhibitorContext } from "@/contexts/exhibitorContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import Button from "./button";
 import ExhibitorsTable from "./exhibitorsTable";
 import ModalComponent from "./modalComponent";
 
-export default function ExhibitorsData() {
-  const [loadingLogout, setLoadingLogout] = useState(false);
+import { api } from "@/api";
 
-  const { exhibitors, loading, error, showModal } = useExhibitorContext();
+import { ExhibitorResponse } from "@/utils/types";
+import { useRouter } from "next/router";
+import DashboardTop from "./dashboardTop";
+import SearchInput from "./searchInput";
+
+export default function ExhibitorsData() {
+  const {
+    exhibitors,
+    loading,
+    error,
+    showModal,
+    dashError,
+    dashSuccess,
+    dispatch,
+  } = useExhibitorContext();
+
+  const router = useRouter();
 
   const fetchError = !loading && error;
   const noExhibitors = !loading && !error && exhibitors.length === 0;
 
+  const [searchText, setSearchText] = useState("");
+
+  const filteredExhibitors =
+    searchText.trim() === ""
+      ? exhibitors
+      : exhibitors.filter((exhibitor) =>
+          exhibitor.name.toLowerCase().includes(searchText.toLowerCase())
+        );
+
   const noExhibitorsInfo = "No exhibitor has made a reservation so far";
 
+  useEffect(() => {
+    async function fetchExhibitors() {
+      try {
+        dispatch({ type: "SET_LOADING", payload: true });
+
+        const accessToken = localStorage.getItem("auth_token");
+        const response = await api.get<{ data: ExhibitorResponse[] }>(
+          "/exhibitors",
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        const exhibitorsArray: ExhibitorResponse[] = response.data.data;
+
+        const exhibitorData = exhibitorsArray.map((exhibitorResponse) => {
+          return { ...exhibitorResponse.attributes };
+        });
+        dispatch({ type: "SET_EXHIBITORS", payload: exhibitorData });
+      } catch (err: any) {
+        if (err.response.status === 403) {
+          localStorage.clear();
+          dispatch({ type: "SET_USER", payload: null });
+        }
+        dispatch({
+          type: "SET_ERROR",
+          payload: "Could not fetch exhibitors! Try again later",
+        });
+      } finally {
+        dispatch({ type: "SET_LOADING", payload: false });
+      }
+    }
+    fetchExhibitors();
+  }, []);
+
   return (
-    <div className="pat h-[100vh] flex flex-col items-center justify-center">
+    <div className="pat h-[100vh] flex flex-col items-center">
+      <DashboardTop />
       <div className="bg-white w-[95%] mx-4 rounded-lg shadow-lg shadow-[rgba(81, 72, 135, 1)] p-[29px]">
         <div className="flex justify-between mb-[24px]">
           <div>
@@ -27,25 +88,23 @@ export default function ExhibitorsData() {
               </p>
             ) : null}
           </div>
-          <div className="flex">
-            <Button text="Registration" disabled={false} />
-            <div className="ml-[10px]">
-              <Button
-                text="Logout"
-                disabled={loadingLogout}
-                backgroundColor="#F64E60"
-              />
-            </div>
-          </div>
+          <SearchInput searchText={searchText} setSearchText={setSearchText} />
         </div>
+        {dashSuccess ? (
+          <div className="w-[fit-content] m-[auto] bg-[#C9F7F5] text-[#1BC5BD] rounded-md px-2 py-2 mb-4">
+            <p className="text-sm">{dashSuccess}</p>
+          </div>
+        ) : null}
+        {dashError ? (
+          <div className="w-[fit-content] m-[auto] bg-[#FFEDED] text-[#DC312D] rounded-md px-2 py-2 mb-4">
+            <p className="text-sm">{dashError}</p>
+          </div>
+        ) : null}
         {loading ? <ExhibitorsLoader /> : null}
         {fetchError ? <ExhibitorsInfo text={error} /> : null}
         {noExhibitors ? <ExhibitorsInfo text={noExhibitorsInfo} /> : null}
         {exhibitors.length > 0 && !loading ? (
-          <ExhibitorsTable
-            loadingLogout={loadingLogout}
-            exhibitors={exhibitors}
-          />
+          <ExhibitorsTable exhibitors={filteredExhibitors} />
         ) : null}
       </div>
       {showModal && createPortal(<ModalComponent />, document.body)}

@@ -1,22 +1,31 @@
 import { api } from "@/api";
 import React, { createContext, useContext, useEffect, useReducer } from "react";
 
-import { AxiosResponse } from "axios";
-import { Exhibitor, ExhibitorResponse } from "@/utils/types";
+import { Exhibitor, UpdateExhibitor, UserObject } from "@/utils/types";
+import AppLoading from "@/components/appLoading";
 
 type ExhibitorAction =
   | { type: "SET_LOADING"; payload: boolean }
   | { type: "SET_ERROR"; payload: string }
-  | { type: "SET_EXHIBITORS"; payload: ExhibitorResponse[] }
+  | { type: "SET_EXHIBITORS"; payload: Exhibitor[] }
   | { type: "SHOW_MODAL"; payload: boolean }
-  | { type: "SET_SELECTED_EXHIBITOR"; payload: Exhibitor };
+  | { type: "SET_SELECTED_EXHIBITOR"; payload: Exhibitor }
+  | { type: "SET_DASH_ERROR"; payload: string }
+  | { type: "SET_DASH_SUCCESS"; payload: string }
+  | { type: "UPDATE_EXHIBITOR"; payload: UpdateExhibitor }
+  | { type: "APP_LOADING"; payload: boolean }
+  | { type: "SET_USER"; payload: UserObject | null };
 
 type ExhibitorContextType = {
   loading: boolean;
   error: string;
-  exhibitors: ExhibitorResponse[];
+  appLoading: boolean;
+  exhibitors: Exhibitor[];
   showModal: boolean;
+  user: UserObject | null;
   selectedExhibitor: Exhibitor;
+  dashSuccess: string;
+  dashError: string;
   dispatch: React.Dispatch<ExhibitorAction>;
 };
 
@@ -24,7 +33,9 @@ const initialState: ExhibitorContextType = {
   loading: true,
   error: "",
   exhibitors: [],
+  user: null,
   showModal: false,
+  appLoading: true,
   selectedExhibitor: {
     email: "",
     phoneNumber: "",
@@ -39,6 +50,8 @@ const initialState: ExhibitorContextType = {
     identifier: "",
   },
   dispatch: () => {},
+  dashError: "",
+  dashSuccess: "",
 };
 
 const ExhibitorContext = createContext<ExhibitorContextType>(initialState);
@@ -62,6 +75,27 @@ function exhibitorsReducer(
       return { ...state, showModal: action.payload };
     case "SET_SELECTED_EXHIBITOR":
       return { ...state, selectedExhibitor: action.payload, showModal: true };
+    case "SET_DASH_ERROR":
+      return { ...state, dashError: action.payload };
+    case "SET_DASH_SUCCESS":
+      return { ...state, dashSuccess: action.payload };
+    case "SET_USER":
+      return { ...state, user: action.payload };
+    case "APP_LOADING":
+      return { ...state, appLoading: action.payload };
+    case "UPDATE_EXHIBITOR":
+      const updatedExhibitor = action.payload;
+      const newExhibitors = state.exhibitors.map((exhibitor) => {
+        if (exhibitor.identifier === updatedExhibitor.identifier) {
+          return {
+            ...exhibitor,
+            reservationStatus: updatedExhibitor.reservationStatus,
+          };
+        }
+        return exhibitor;
+      });
+      return { ...state, exhibitors: newExhibitors };
+
     default:
       return state;
   }
@@ -79,25 +113,40 @@ export default function ExhibitorContextProvider({
   };
 
   useEffect(() => {
-    async function fetchExhibitors() {
+    async function getUser() {
       try {
-        dispatch({ type: "SET_LOADING", payload: true });
-        const response = await api.get<{ data: ExhibitorResponse[] }>(
-          "/exhibitors"
-        );
-        const exhibitorsArray: ExhibitorResponse[] = response.data.data;
-        dispatch({ type: "SET_EXHIBITORS", payload: exhibitorsArray });
+        const userToken = localStorage.getItem("auth_token");
+
+        if (!userToken) {
+          return dispatch({ type: "APP_LOADING", payload: false });
+        }
+
+        const url = "/users/me";
+
+        const response = await api.get(url, {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        });
+
+        const userData = response.data;
+
+        const userObject: UserObject = {
+          name: userData.username,
+          email: userData.email,
+        };
+        dispatch({
+          type: "SET_USER",
+          payload: userObject,
+        });
       } catch (err) {
         console.log(err);
-        dispatch({
-          type: "SET_ERROR",
-          payload: "Could not fetch exhibitors: Try again later",
-        });
       } finally {
-        dispatch({ type: "SET_LOADING", payload: false });
+        dispatch({ type: "APP_LOADING", payload: false });
       }
     }
-    fetchExhibitors();
+
+    getUser();
   }, []);
 
   return (

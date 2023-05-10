@@ -1,4 +1,5 @@
 import ExhibitorsData from "@/components/exhibitorsData";
+import ExhibitorsContainer from "@/components/exhibitorsContainer";
 import ExhibitorContextProvider, {
   useExhibitorContext,
 } from "@/contexts/exhibitorContext";
@@ -6,7 +7,7 @@ import ExhibitorContextProvider, {
 export default function Dashboard() {
   return (
     <ExhibitorContextProvider>
-      <ExhibitorsData />
+      <ExhibitorsContainer />
     </ExhibitorContextProvider>
   );
 }

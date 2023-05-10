@@ -3,12 +3,22 @@ import { api } from "@/api";
 const MAX_RETRY_ATTEMPTS = 3;
 const RETRY_DELAY = 1000;
 
-const postDataWithRetries = async (payload: any, url: string) => {
+const postDataWithRetries = async (
+  payload: any,
+  url: string,
+  accessToken?: string
+) => {
   let retryAttempts = 0;
 
   while (retryAttempts < MAX_RETRY_ATTEMPTS) {
     try {
-      const response = await api.post(url, payload);
+      const response = await api.post(url, payload, {
+        ...(accessToken && {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }),
+      });
       return response.data;
     } catch (error: any) {
       console.log("at request log", error.response);

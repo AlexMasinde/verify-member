@@ -1,13 +1,18 @@
 import { useExhibitorContext } from "@/contexts/exhibitorContext";
+import delay from "@/utils/delay";
+import postDataWithRetries from "@/utils/request";
 import { Exhibitor } from "@/utils/types";
+import { useState } from "react";
 import Button from "./button";
 
 export default function Exhibitor({
   exhibitor,
-  loadingLogout,
+  loadingExhibitorAction,
+  setLoadingExhibitorAction,
 }: {
   exhibitor: Exhibitor;
-  loadingLogout: boolean;
+  loadingExhibitorAction: boolean;
+  setLoadingExhibitorAction: (value: boolean) => void;
 }) {
   const spaceReserved =
     exhibitor.spaceReserved === "A"
@@ -20,33 +25,142 @@ export default function Exhibitor({
 
   const { dispatch } = useExhibitorContext();
 
-  return (
-    <tr
-      key={exhibitor.identifier}
-      className="hover:cursor-pointer hover:bg-purple-50"
-      onClick={() =>
-        dispatch({ type: "SET_SELECTED_EXHIBITOR", payload: exhibitor })
+  function dispatchExhibitor() {
+    dispatch({ type: "SET_SELECTED_EXHIBITOR", payload: exhibitor });
+  }
+
+  const accessToken = localStorage.getItem("auth_token");
+
+  const accessTokenToPass = accessToken ? accessToken : undefined;
+
+  async function acceptExhibitor() {
+    try {
+      setLoadingExhibitorAction(true);
+      const url = "/exhibitor/accept";
+      await postDataWithRetries(
+        { identifier: exhibitor.identifier },
+        url,
+        accessTokenToPass
+      );
+      dispatch({
+        type: "SET_DASH_SUCCESS",
+        payload: "Exhibitor reservation successfully accepted",
+      });
+      await delay(5000);
+      dispatch({ type: "SET_DASH_SUCCESS", payload: "" });
+      dispatch({
+        type: "UPDATE_EXHIBITOR",
+        payload: {
+          identifier: exhibitor.identifier,
+          reservationStatus: "accepted",
+        },
+      });
+    } catch (err: any) {
+      console.log(err);
+      if (err.code === "ERR_NETWORK") {
+        dispatch({
+          type: "SET_DASH_ERROR",
+          payload: "Could not accept exhibitor reservation! Try again later",
+        });
+      } else if (err.response.status === 403) {
+        localStorage.clear();
+        dispatch({ type: "SET_USER", payload: null });
+      } else {
+        dispatch({
+          type: "SET_DASH_ERROR",
+          payload: err.response.data.error.message,
+        });
       }
-    >
-      <td className="border-b py-4 px-4">{exhibitor.name}</td>
-      <td className="border-b py-4">{exhibitor.email}</td>
-      <td className="border-b py-4">{spaceReserved}</td>
-      <td className="border-b py-4">{exhibitor.phoneNumber}</td>
+      setTimeout(() => {
+        dispatch({ type: "SET_DASH_ERROR", payload: "" });
+      }, 5000);
+    } finally {
+      setLoadingExhibitorAction(false);
+    }
+  }
+
+  async function rejectExhibitor() {
+    try {
+      setLoadingExhibitorAction(true);
+      const url = "/exhibitor/reject";
+      await postDataWithRetries(
+        { identifier: exhibitor.identifier },
+        url,
+        accessTokenToPass
+      );
+      dispatch({
+        type: "SET_DASH_SUCCESS",
+        payload: "Exhibitor reservation rejected",
+      });
+      await delay(5000);
+      dispatch({ type: "SET_DASH_SUCCESS", payload: "" });
+      dispatch({
+        type: "UPDATE_EXHIBITOR",
+        payload: {
+          identifier: exhibitor.identifier,
+          reservationStatus: "rejected",
+        },
+      });
+    } catch (err: any) {
+      if (err.code === "ERR_NETWORK") {
+        dispatch({
+          type: "SET_DASH_ERROR",
+          payload: "Could not reject exhibitor reservation! Try again later",
+        });
+      } else if (err.response.status === 403) {
+        localStorage.clear();
+        dispatch({ type: "SET_USER", payload: null });
+      } else {
+        dispatch({
+          type: "SET_DASH_ERROR",
+          payload: err.response.data.error.message,
+        });
+      }
+      setTimeout(() => {
+        dispatch({ type: "SET_DASH_ERROR", payload: "" });
+      }, 5000);
+    } finally {
+      setLoadingExhibitorAction(false);
+    }
+  }
+
+  return (
+    <tr key={exhibitor.identifier} className="hover:cursor-pointer">
+      <td className="border-b py-4 px-4 opacity-70" onClick={dispatchExhibitor}>
+        {exhibitor.name}
+      </td>
+      <td className="border-b py-4 opacity-70" onClick={dispatchExhibitor}>
+        {exhibitor.email}
+      </td>
+      <td className="border-b py-4 opacity-70" onClick={dispatchExhibitor}>
+        TENT {spaceReserved}
+      </td>
+      <td className="border-b py-4 opacity-70" onClick={dispatchExhibitor}>
+        {exhibitor.phoneNumber}
+      </td>
+
       <td className="border-b py-4">
         {status === "pending" ? (
-          <div className="flex justify-end ">
-            <div>
+          <div
+            className="flex justify-end"
+            aria-disabled={loadingExhibitorAction}
+          >
+            <div onClick={acceptExhibitor}>
               <Button
                 text="Accept"
-                disabled={loadingLogout}
+                disabled={loadingExhibitorAction}
                 textColor="#1BC5BD"
                 backgroundColor="#C9F7F5"
               />
             </div>
-            <div className="ml-[24px] flex flex-col items-stretch">
+            <div
+              className="ml-[24px] flex flex-col items-stretch"
+              aria-disabled={loadingExhibitorAction}
+              onClick={rejectExhibitor}
+            >
               <Button
                 text="Reject"
-                disabled={loadingLogout}
+                disabled={loadingExhibitorAction}
                 textColor="#DC312D"
                 backgroundColor="#FFEDED"
               />
@@ -61,15 +175,11 @@ export default function Exhibitor({
 }
 
 function StatusButton({ status }: { status: string }) {
-  const backgroundColor = status === "accepted" ? "#C9F7F5" : "#FFEDED";
   const textColor = status === "accepted" ? "#1BC5BD" : "#DC312D";
   const text = status === "accepted" ? "Accepted" : "Rejected";
 
   return (
-    <div
-      //   style={{ backgroundColor: backgroundColor }}
-      className="px-4 py-[0px] rounded-lg text-right"
-    >
+    <div className="px-4 py-[0px] rounded-lg text-right text-sm">
       <p style={{ color: textColor }}>{text}</p>
     </div>
   );
