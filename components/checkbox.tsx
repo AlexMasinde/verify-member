@@ -20,7 +20,7 @@ function Checkbox({
       />
       <label
         htmlFor="checkbox"
-        className="flex items-center justify-center w-4 h-4 border border-[#514887] rounded cursor-pointer mr-2"
+        className="w-6 h-4 border border-[#514887] rounded cursor-pointer mr-2"
       >
         {confirmedTSCDeduction && (
           <svg

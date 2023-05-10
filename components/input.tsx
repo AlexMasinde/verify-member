@@ -14,13 +14,14 @@ export default function Input({
   type?: string;
 }) {
   return (
-    <div className="mt-[12px]">
+    <div className="mt-[12px] text-[14px] mb-[5px] opacity-70">
+      <p>{inputLabel}</p>
       <p
         className={`text-[14px] mb-[5px] opacity-70 ${
           error.trim() === "" ? "" : "text-red-700"
         }`}
       >
-        {error.trim() === "" ? inputLabel : error}
+        <p>{error}</p>
       </p>
       <input
         value={value}

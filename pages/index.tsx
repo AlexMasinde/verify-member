@@ -16,10 +16,9 @@ export default function Home() {
               Kenya Secondary Schools Heads Association
             </h1>
           </div>
-          <div className="mt-[12px] flex flex-col items-center">
-            <h1 className=" text-lg">
-              KESSHA 46TH ANNUAL NATIONAL CONFERENCE OF PRINCIPALS AND
-              EXHIBITION
+          <div className="mt-[12px] flex flex-col items-center p-5">
+            <h1 className="text-3xl font-extrabold ">
+              KSSHA 46TH ANNUAL NATIONAL CONFERENCE OF PRINCIPALS AND EXHIBITION
             </h1>
             <p className="text-lg opacity-60">
               26th to 30th June 2023 at the Sheikh Zayed Hall in Mombasa.

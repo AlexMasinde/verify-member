@@ -42,7 +42,7 @@ export default function Payment({
           onChange={handleCode}
           value={code}
         />
-        <div className="flex items-center justify-around ">
+        <div className="flex items-center justify-around mt-2">
           <div onClick={handleBack} className="">
             <span className="text-blue-500  hover:cursor-pointer">Back</span>
           </div>
