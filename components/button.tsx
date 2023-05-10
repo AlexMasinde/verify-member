@@ -3,14 +3,22 @@ import React from "react";
 export default function Button({
   text,
   disabled,
+  backgroundColor,
+  textColor,
 }: {
   text: string;
   disabled: boolean;
+  backgroundColor?: string;
+  textColor?: string;
 }) {
   return (
-    <div className="mt-[12px] w-full">
+    <div className="w-full">
       <button
-        className={`bg-[#514887] rounded-lg px-4 py-2 text-white hover:opacity-50 hover:shadow-lg w-full ${
+        style={{
+          backgroundColor: backgroundColor ?? "#514887",
+          color: textColor ?? "#ffffff",
+        }}
+        className={`rounded-lg px-4 py-2 text-white hover:opacity-50 hover:shadow-lg text-sm w-full ${
           disabled ? "opacity-50" : ""
         }`}
         type="submit"

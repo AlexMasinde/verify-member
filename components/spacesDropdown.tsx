@@ -112,3 +112,14 @@ function DropDownItem({
     </div>
   );
 }
+
+function Sample() {
+  return (
+    <div>
+      <p className="font-bold text-sm">TENTS (14' X 20') 150,000/-</p>
+      <p className="text-sm pt-[4px]">i) Tables ................... 3</p>
+      <p className="text-sm pt-[4px]">ii) Chairs................... 6</p>
+      <p className="text-sm pt-[4px]">iii) Tags...................... 6</p>
+    </div>
+  );
+}

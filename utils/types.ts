@@ -62,3 +62,22 @@ export type SpaceData = {
   availableSpaces: string;
   id: string;
 };
+
+export type Exhibitor = {
+  email: string;
+  phoneNumber: string;
+  contactPerson: string;
+  description: string;
+  spaceReserved: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  name: string;
+  reservationStatus: string;
+  identifier: string;
+};
+
+export type ExhibitorResponse = {
+  id: number;
+  attributes: Exhibitor;
+};
