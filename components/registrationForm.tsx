@@ -11,13 +11,14 @@ export default function RegistrationForm({
   userData,
   setUserData,
   setShowPayment,
+  loading,
 }: {
   userData: UserData;
   setUserData: (value: UserData) => void;
   setShowPayment: (value: boolean) => void;
+  loading: boolean;
 }) {
   const [inputErrors, setInputErrors] = useState<Errors>({});
-  const [confirmedTSCDeduction, setConfirmedTSCDeduction] = useState(false);
 
   function handleName(event: React.ChangeEvent<HTMLInputElement>) {
     setUserData({ ...userData, name: event.target.value });
@@ -66,7 +67,14 @@ export default function RegistrationForm({
     }
   }
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  function handleCheckbox() {
+    setUserData({
+      ...userData,
+      confirmedTSCDeduction: !userData.confirmedTSCDeduction,
+    });
+  }
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const { valid, errors } = registerValidate(userData);
     if (!valid) {
@@ -125,12 +133,12 @@ export default function RegistrationForm({
           />
         </div>
         <Checkbox
-          confirmedTSCDeduction={confirmedTSCDeduction}
-          setConfirmedTSCDeduction={setConfirmedTSCDeduction}
-          checkboxLabel="Accept terms and conditions"
+          confirmedTSCDeduction={userData.confirmedTSCDeduction}
+          handleChange={handleCheckbox}
+          checkboxLabel="Are you deducted monthly contributions to the Association by TSC"
         />
-        <div className="flex flex-col items-center">
-          <Button text="Register" />
+        <div className="flex flex-col items-center mt-2">
+          <Button text="Submit" disabled={loading} />
         </div>
       </form>
     </div>

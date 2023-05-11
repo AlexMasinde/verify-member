@@ -1,17 +1,13 @@
-import React from "react";
-
-export default function Input({
+export default function TextArea({
   inputLabel,
   onChange,
   error,
   value,
-  type,
 }: {
   inputLabel: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   error: string;
   value: string;
-  type?: string;
 }) {
   return (
     <div className="mt-[12px]">
@@ -22,10 +18,9 @@ export default function Input({
       >
         {error.trim() === "" ? inputLabel : error}
       </p>
-      <input
+      <textarea
         value={value}
         onChange={onChange}
-        type={type ? type : "text"}
         className="border border-gray-300 px-[18px] py-2 rounded-[6px] outline-none w-full lg:w-400 sm:ml-[0%]"
       />
     </div>

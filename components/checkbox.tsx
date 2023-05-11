@@ -2,11 +2,11 @@ import React, { useState } from "react";
 
 function Checkbox({
   confirmedTSCDeduction,
-  setConfirmedTSCDeduction,
+  handleChange,
   checkboxLabel,
 }: {
   confirmedTSCDeduction: boolean;
-  setConfirmedTSCDeduction: (value: boolean) => void;
+  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   checkboxLabel: string;
 }) {
   return (
@@ -16,7 +16,7 @@ function Checkbox({
         id="checkbox"
         className="hidden"
         checked={confirmedTSCDeduction}
-        onChange={() => setConfirmedTSCDeduction(!confirmedTSCDeduction)}
+        onChange={handleChange}
       />
       <label
         htmlFor="checkbox"

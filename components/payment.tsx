@@ -9,6 +9,9 @@ export default function Payment({
   setShowPayment,
   code,
   setCodeError,
+  successMessage,
+  requestError,
+  loading,
 }: {
   setCode: (value: string) => void;
   handleSubmit: (value: any) => void;
@@ -16,6 +19,9 @@ export default function Payment({
   codeError: string;
   setShowPayment: (value: boolean) => void;
   code: string;
+  successMessage: string;
+  requestError: string;
+  loading: boolean;
 }) {
   function handleCode(event: React.ChangeEvent<HTMLInputElement>) {
     setCodeError("");
@@ -23,6 +29,7 @@ export default function Payment({
   }
 
   function handleBack() {
+    if (loading) return;
     setShowPayment(false);
   }
 
@@ -39,9 +46,17 @@ export default function Payment({
           <div onClick={handleBack} className="">
             <span className="text-blue-500  hover:cursor-pointer">Back</span>
           </div>
-          <div>
-            <Button text="Confirm" />
+          <div className="mt-4">
+            <Button text="Confirm" disabled={loading} />
           </div>
+        </div>
+        <div className="mt-[10px]">
+          {successMessage ? (
+            <p className="text-green-500 text-center">{successMessage}</p>
+          ) : null}
+          {requestError ? (
+            <p className="text-red-500 text-center">{requestError}</p>
+          ) : null}
         </div>
       </form>
     </div>
