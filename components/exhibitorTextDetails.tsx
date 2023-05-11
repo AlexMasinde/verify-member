@@ -99,7 +99,7 @@ export default function ExhibitorTextDetails() {
             >
               <circle cx="12" cy="12" r="11" />
               <path
-                d="m8 13 2.165 2.165a1 1 0 0 0 1.521-.126L16 9"
+                d="m8 13 2.165 2.165ag1 1 0 0 0 1.521-.126L16 9"
                 fill="none"
               />
             </svg>
