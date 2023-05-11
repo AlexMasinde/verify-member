@@ -22,7 +22,7 @@ export default function Home() {
                 alt="KSSHA Logo"
               />
             </div>
-            <div className="mt-[12px] flex flex-col items-center xs:px-1">
+            <div className="mt-[12px] flex flex-col items-center px-2">
               <h1 className=" font-bold text-lg text-center">
                 KESSHA 46TH ANNUAL NATIONAL CONFERENCE OF PRINCIPALS AND
                 EXHIBITION
