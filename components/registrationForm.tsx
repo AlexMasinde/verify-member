@@ -6,6 +6,8 @@ import Button from "./button";
 
 import { registerValidate } from "@/utils/validators";
 import Checkbox from "./checkbox";
+import { useDisclosure } from "@chakra-ui/react";
+import PrivacyModal from "./modal";
 
 export default function RegistrationForm({
   userData,
@@ -19,6 +21,8 @@ export default function RegistrationForm({
   loading: boolean;
 }) {
   const [inputErrors, setInputErrors] = useState<Errors>({});
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   function handleName(event: React.ChangeEvent<HTMLInputElement>) {
     setUserData({ ...userData, name: event.target.value });
@@ -140,6 +144,13 @@ export default function RegistrationForm({
         <div className="flex flex-col items-center mt-2">
           <Button text="Submit" disabled={loading} />
         </div>
+        <p className="text-sm text-center mt-2">
+          By submitting you agree our{" "}
+          <span className="text-blue-600 cursor-pointer" onClick={onOpen}>
+            Privacy Policy
+          </span>
+        </p>
+        <PrivacyModal isOpen={isOpen} onClose={onClose} onOpen={onOpen} />
       </form>
     </div>
   );

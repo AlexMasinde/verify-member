@@ -10,6 +10,8 @@ import { exhibitorValidate } from "@/utils/validators";
 import postDataWithRetries from "@/utils/request";
 import delay from "@/utils/delay";
 import useSpaces from "@/hooks/getSpaces";
+import { useDisclosure } from "@chakra-ui/react";
+import PrivacyModal from "./modal";
 
 export default function ExhibitorRegistrationForm({
   exhibitorData,
@@ -25,6 +27,8 @@ export default function ExhibitorRegistrationForm({
   const [errorMessage, setErrorMessage] = useState("");
 
   const [selectedSpace, setSelectedSpace] = useState<SpaceData | null>(null);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const {
     spaces: spacesDetails,
@@ -190,6 +194,7 @@ export default function ExhibitorRegistrationForm({
         <div className="flex flex-col items-center mt-4">
           <Button text="Reserve" disabled={loading} />
         </div>
+
         <div>
           {successMessage ? (
             <p className="text-green-500 text-center mt-2 text-sm">
@@ -202,6 +207,13 @@ export default function ExhibitorRegistrationForm({
             </p>
           ) : null}
         </div>
+        <p className="text-sm text-center mt-2">
+          By submitting you agree our{" "}
+          <span className="text-blue-600 cursor-pointer" onClick={onOpen}>
+            Privacy Policy
+          </span>
+        </p>
+        <PrivacyModal isOpen={isOpen} onClose={onClose} onOpen={onOpen} />
       </form>
     </div>
   );
