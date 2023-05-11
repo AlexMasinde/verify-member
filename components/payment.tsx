@@ -46,7 +46,7 @@ export default function Payment({
           <div onClick={handleBack} className="">
             <span className="text-blue-500  hover:cursor-pointer">Back</span>
           </div>
-          <div>
+          <div className="mt-4">
             <Button text="Confirm" disabled={loading} />
           </div>
         </div>

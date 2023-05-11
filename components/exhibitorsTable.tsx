@@ -1,14 +1,14 @@
-import { ExhibitorResponse } from "@/utils/types";
-import Button from "./button";
+import { Exhibitor as ExhibitorType, ExhibitorResponse } from "@/utils/types";
+import { useState } from "react";
 import Exhibitor from "./exhibitor";
 
 export default function ExhibitorsTable({
-  loadingLogout,
   exhibitors,
 }: {
-  loadingLogout: boolean;
-  exhibitors: ExhibitorResponse[];
+  exhibitors: ExhibitorType[];
 }) {
+  const [loadingExhibitorAction, setLoadingExhibitorAction] = useState(false);
+
   return (
     <table className="min-w-full border-collapse  mr-[auto] ml-[auto] ">
       <thead className="">
@@ -29,13 +29,13 @@ export default function ExhibitorsTable({
         </tr>
       </thead>
       <tbody>
-        {exhibitors.map((exhibitor: ExhibitorResponse) => {
-          const exhibitorData = exhibitor.attributes;
+        {exhibitors.map((exhibitor: ExhibitorType) => {
           return (
             <Exhibitor
-              key={exhibitorData.identifier}
-              loadingLogout={loadingLogout}
-              exhibitor={exhibitorData}
+              key={exhibitor.identifier}
+              loadingExhibitorAction={loadingExhibitorAction}
+              setLoadingExhibitorAction={setLoadingExhibitorAction}
+              exhibitor={exhibitor}
             />
           );
         })}

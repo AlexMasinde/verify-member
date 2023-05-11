@@ -81,3 +81,13 @@ export type ExhibitorResponse = {
   id: number;
   attributes: Exhibitor;
 };
+
+export type UpdateExhibitor = {
+  identifier: string;
+  reservationStatus: string;
+};
+
+export type UserObject = {
+  name: string;
+  email: string;
+};

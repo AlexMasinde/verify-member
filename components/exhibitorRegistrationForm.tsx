@@ -88,8 +88,6 @@ export default function ExhibitorRegistrationForm({
       setSuccessMessage(
         "Reservation submitted successfully! Further details will be shared via email and phone"
       );
-      await delay(4000);
-      setSuccessMessage("");
       setExhibitorData({
         name: "",
         contactPerson: "",
@@ -99,6 +97,9 @@ export default function ExhibitorRegistrationForm({
         spaceReserved: "",
       });
       setSelectedSpace(null);
+      setLoading(false);
+      await delay(5000);
+      setSuccessMessage("");
     } catch (err: any) {
       if (err.code === "ERR_NETWORK") {
         setErrorMessage("Error completing registration. Try again later");
@@ -108,7 +109,6 @@ export default function ExhibitorRegistrationForm({
       setTimeout(() => {
         setErrorMessage("");
       }, 3000);
-    } finally {
       setLoading(false);
     }
   }
@@ -187,15 +187,19 @@ export default function ExhibitorRegistrationForm({
           ) : null}
         </div>
 
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center mt-4">
           <Button text="Reserve" disabled={loading} />
         </div>
         <div>
           {successMessage ? (
-            <p className="text-green-500 text-center">{successMessage}</p>
+            <p className="text-green-500 text-center mt-2 text-sm">
+              {successMessage}
+            </p>
           ) : null}
           {errorMessage ? (
-            <p className="text-red-500 text-center">{errorMessage}</p>
+            <p className="text-red-500 text-center mt-2 text-sm">
+              {errorMessage}
+            </p>
           ) : null}
         </div>
       </form>
