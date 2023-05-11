@@ -9,7 +9,7 @@ export default function ExhibitorTextDetails() {
             <svg
               className="h-6 w-6 flex-none fill-[#fff] stroke-[#514887] stroke-2"
               stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinejoin="round"
             >
               <circle cx="12" cy="12" r="11" />
               <path
@@ -26,7 +26,7 @@ export default function ExhibitorTextDetails() {
             <svg
               className="h-6 w-6 flex-none fill-[#fff] stroke-[#514887] stroke-2"
               stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinejoin="round"
             >
               <circle cx="12" cy="12" r="11" />
               <path
@@ -42,7 +42,7 @@ export default function ExhibitorTextDetails() {
             <svg
               className="h-6 w-6 flex-none fill-[#fff] stroke-[#514887] stroke-2"
               stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinejoin="round"
             >
               <circle cx="12" cy="12" r="11" />
               <path
@@ -59,7 +59,7 @@ export default function ExhibitorTextDetails() {
             <svg
               className="h-6 w-6 flex-none fill-[#fff] stroke-[#514887] stroke-2"
               stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinejoin="round"
             >
               <circle cx="12" cy="12" r="11" />
               <path
@@ -76,7 +76,7 @@ export default function ExhibitorTextDetails() {
             <svg
               className="h-6 w-6 flex-none fill-[#fff] stroke-[#514887] stroke-2"
               stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinejoin="round"
             >
               <circle cx="12" cy="12" r="11" />
               <path
@@ -95,7 +95,7 @@ export default function ExhibitorTextDetails() {
             <svg
               className="h-6 w-6 flex-none fill-[#fff] stroke-[#514887] stroke-2"
               stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinejoin="round"
             >
               <circle cx="12" cy="12" r="11" />
               <path
