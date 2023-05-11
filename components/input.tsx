@@ -17,11 +17,11 @@ export default function Input({
     <div className="mt-[12px] text-[14px] mb-[5px] opacity-70">
       <p>{inputLabel}</p>
       <p
-        className={`text-[14px] mb-[5px] opacity-70 ${
+        className={`text-[14px] mb-[5px]  ${
           error.trim() === "" ? "" : "text-red-700"
         }`}
       >
-        <p>{error}</p>
+        {error}
       </p>
       <input
         value={value}

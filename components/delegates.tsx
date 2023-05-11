@@ -27,9 +27,21 @@ export default function Delegates() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (code.trim() === "") {
-      setCodeError("Please provide payment code");
-      return;
+
+    const codes = code
+      .split(",")
+      .map(function (id) {
+        return id.trim();
+      })
+      .filter(function (id) {
+        return id !== "";
+      });
+
+    if (codes.length === 0) {
+      return setCodeError("Enter at least one transaction code");
+    }
+    if (new Set(codes).size !== codes.length) {
+      return setCodeError("Duplicate transaction codes found");
     }
 
     try {

@@ -57,6 +57,7 @@ export default function TextDetails() {
               <strong className="text-sm font-bold text-gray-900">name</strong>
             </p>
           </li>
+
           <li className="flex items-center">
             <svg
               className="h-6 w-6 flex-none fill-[#fff] stroke-[#514887] stroke-2"
@@ -75,6 +76,26 @@ export default function TextDetails() {
                 (e.g. RDK7NQ9AMH)
               </strong>{" "}
               that you receive to complete registration
+            </p>
+          </li>
+          <li className="flex items-center">
+            <svg
+              className="h-6 w-6 flex-none fill-[#fff] stroke-[#514887] stroke-2"
+              stroke-linecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="12" cy="12" r="11" />
+              <path
+                d="m8 13 2.165 2.165a1 1 0 0 0 1.521-.126L16 9"
+                fill="none"
+              />
+            </svg>
+            <p className="ml-4">
+              Incase you have made multiple payments, enter transaction codes
+              separated by a comma{" "}
+              <strong className="text-sm font-bold text-gray-900">
+                (e.g. RDK7NQ9AMH,KDK7NQ9AMZ)
+              </strong>
             </p>
           </li>
           <li className="flex items-center">
