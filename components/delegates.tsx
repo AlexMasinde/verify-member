@@ -54,7 +54,7 @@ export default function Delegates() {
       const url = "/payment/verify";
       await postDataWithRetries(payload, url);
       setSuccessMessage(
-        "Registration completed successfully! Check email for confirmation"
+        "Registration completed successfully! Check your email for the invitation letter"
       );
       await delay(6000);
       setSuccessMessage("");
