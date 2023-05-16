@@ -102,18 +102,8 @@ export function registerValidate(userData: UserData) {
 
   stringValidator(errors, name, "name");
   stringValidator(errors, subCounty, "subCounty");
+  stringValidator(errors, county, "county");
   stringValidator(errors, school, "school");
-
-  const selectedCounty = counties.filter(
-    (countyListItem) =>
-      countyListItem.county_name.toLowerCase() === county.toLowerCase()
-  );
-
-  if (county.trim() === "") {
-    errors.county = "Please enter your county";
-  } else if (selectedCounty.length === 0) {
-    errors.county = "Please provide a valid county";
-  }
 
   if (email.trim() === "") {
     errors.email = "Please enter your email address";
@@ -147,6 +137,10 @@ function stringValidator(errors: Errors, value: string, field: keyof Errors) {
     case "subCounty":
       emptyMessage = "Please provide your sub county";
       invalidMessage = "Sub county should contain letters and spaces only";
+      break;
+    case "county":
+      emptyMessage = "Please provide your county";
+      invalidMessage = "County should contain letters and spaces only";
       break;
     case "school":
       emptyMessage = "Please provide your school name";

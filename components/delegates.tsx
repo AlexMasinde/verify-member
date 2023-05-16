@@ -75,7 +75,10 @@ export default function Delegates() {
       if (err.code === "ERR_NETWORK") {
         setRequestError("Error completing registration! Try again later");
       } else {
-        setRequestError(err.response.data.error.message);
+        const error =
+          err.response?.data.error.message ??
+          "Error completing registration! Try again later";
+        setRequestError(error);
       }
       setTimeout(() => {
         setRequestError("");
