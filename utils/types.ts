@@ -41,7 +41,7 @@ export type UserData = {
   subCounty: string;
   email: string;
   phoneNumber: string;
-  confirmedTSCDeduction: boolean;
+  // confirmedTSCDeduction: boolean;
 };
 
 export type ExhibitorData = {
