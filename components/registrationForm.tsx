@@ -71,12 +71,12 @@ export default function RegistrationForm({
     }
   }
 
-  function handleCheckbox() {
-    setUserData({
-      ...userData,
-      confirmedTSCDeduction: !userData.confirmedTSCDeduction,
-    });
-  }
+  // function handleCheckbox() {
+  //   setUserData({
+  //     ...userData,
+  //     confirmedTSCDeduction: !userData.confirmedTSCDeduction,
+  //   });
+  // }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -136,11 +136,11 @@ export default function RegistrationForm({
             value={userData.subCounty}
           />
         </div>
-        <Checkbox
+        {/* <Checkbox
           confirmedTSCDeduction={userData.confirmedTSCDeduction}
           handleChange={handleCheckbox}
           checkboxLabel="Are you deducted monthly contributions to the Association by TSC"
-        />
+        /> */}
         <div className="flex flex-col items-center mt-2">
           <Button text="Submit" disabled={loading} />
         </div>
