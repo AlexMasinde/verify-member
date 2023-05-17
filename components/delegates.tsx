@@ -48,6 +48,7 @@ export default function Delegates() {
       setLoading(true);
       const payload = {
         ...userData,
+        confirmedTSCDeduction: false,
         TransID: code,
       };
       const url = "/payment/verify";
@@ -65,7 +66,6 @@ export default function Delegates() {
         county: "",
         school: "",
         subCounty: "",
-        // confirmedTSCDeduction: false,
       });
       setCode("");
       setShowPayment(false);
