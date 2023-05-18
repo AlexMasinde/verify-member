@@ -1,9 +1,9 @@
 import { api } from "@/api";
 
 const MAX_RETRY_ATTEMPTS = 3;
-const RETRY_DELAY = 1000;
+const RETRY_DELAY = 2000;
 
-const postDataWithRetries = async (
+export const postDataWithRetries = async (
   payload: any,
   url: string,
   accessToken?: string
@@ -26,7 +26,7 @@ const postDataWithRetries = async (
       if (error.response && error.response.status >= 500) {
         await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
       } else if (!error.response && retryAttempts < MAX_RETRY_ATTEMPTS) {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
       } else {
         throw error;
       }
@@ -36,4 +36,24 @@ const postDataWithRetries = async (
   throw new Error("Request failed");
 };
 
-export default postDataWithRetries;
+export const getDataWithRetries = async (url: string) => {
+  let retryAttempts = 0;
+
+  while (retryAttempts < MAX_RETRY_ATTEMPTS) {
+    try {
+      const response = await api.get(url);
+      return response.data;
+    } catch (error: any) {
+      retryAttempts++;
+      if (error.response && error.response.status >= 500) {
+        await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
+      } else if (!error.response && retryAttempts < MAX_RETRY_ATTEMPTS) {
+        await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
+      } else {
+        throw error;
+      }
+    }
+  }
+
+  throw new Error("Request failed");
+};

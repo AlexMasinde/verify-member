@@ -8,7 +8,7 @@ import Button from "./button";
 import Input from "./input";
 import logo from "../public/images/kssha_logo.png";
 
-import postDataWithRetries from "@/utils/request";
+import { postDataWithRetries } from "@/utils/request";
 import { useExhibitorContext } from "@/contexts/exhibitorContext";
 
 export default function Login() {
