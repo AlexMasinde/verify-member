@@ -7,7 +7,7 @@ import Button from "./button";
 import TextArea from "./textArea";
 import SpacesDropdown from "./spacesDropdown";
 import { exhibitorValidate } from "@/utils/validators";
-import postDataWithRetries from "@/utils/request";
+import { postDataWithRetries } from "@/utils/request";
 import delay from "@/utils/delay";
 import useSpaces from "@/hooks/getSpaces";
 import { useDisclosure } from "@chakra-ui/react";

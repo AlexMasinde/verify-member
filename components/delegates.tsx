@@ -4,7 +4,7 @@ import TextDetails from "@/components/textDetails";
 import RegistrationForm from "@/components/registrationForm";
 import Payment from "@/components/payment";
 import { api } from "@/api";
-import postDataWithRetries from "@/utils/request";
+import { postDataWithRetries } from "@/utils/request";
 import delay from "@/utils/delay";
 
 export default function Delegates() {
