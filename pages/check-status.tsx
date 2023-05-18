@@ -187,6 +187,7 @@ function UserDetails({ userDetails }: { userDetails: UserStatusDetails }) {
       {message ? (
         <Text
           color="green"
+          as="b"
           paddingStart="5px"
           marginTop="10px"
           textAlign="center"

@@ -47,7 +47,13 @@ export default function Delegates() {
       console.log({ ...userData, TransID: code });
       setLoading(true);
       const payload = {
-        ...userData,
+        name: userData.name.toUpperCase(),
+        school: userData.school.toUpperCase(),
+        county: userData.county.toUpperCase(),
+        subCounty: userData.subCounty.toUpperCase(),
+        phoneNumber: userData.phoneNumber,
+        tscNumber: userData.tscNumber,
+        email: userData.email,
         confirmedTSCDeduction: false,
         TransID: code,
       };
