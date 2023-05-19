@@ -9,12 +9,13 @@ import {
   Divider,
   FormErrorMessage,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getDataWithRetries, postDataWithRetries } from "@/utils/request";
 import logo from "../public/images/kssha_logo.png";
 import { useRouter } from "next/router";
 import delay from "@/utils/delay";
 import Image from "next/image";
+import Link from "next/link";
 
 type UserStatusDetails = {
   name: string;
@@ -28,16 +29,31 @@ export default function CheckStatus() {
   const [isMobile] = useMediaQuery("(max-width: 768px)");
 
   const [loading, setLoading] = useState(false);
-  const [serialNumber, setSerialNUmber] = useState("");
+  const [serialNumber, setSerialNumber] = useState("");
   const [userDetails, setUserDetails] = useState<null | UserStatusDetails>(
     null
   );
 
   const [error, setError] = useState("");
 
+  const router = useRouter();
+
+  const { query } = router;
+
+  useEffect(() => {
+    const { serialNumber } = query;
+    if (!serialNumber) return;
+    if (Array.isArray(serialNumber)) {
+      const values = serialNumber as string[];
+      setSerialNumber(values[0]);
+    } else {
+      setSerialNumber(serialNumber);
+    }
+  }, [query]);
+
   function handleSerial(event: React.ChangeEvent<HTMLInputElement>) {
     if (error) setError("");
-    setSerialNUmber(event.target.value);
+    setSerialNumber(event.target.value);
   }
 
   async function checkStatus() {
@@ -78,13 +94,19 @@ export default function CheckStatus() {
   return (
     <Container maxW="400px" marginTop={isMobile ? "30px" : "10%"}>
       <TextContainer>
-        <Image src={logo} alt="KSSHA logo" />
+        <Link href="/">
+          <Image src={logo} alt="KSSHA logo" />
+        </Link>
         <Text as="b">Check Registration Status</Text>
       </TextContainer>
       <Divider height="0px" />
       <InputGroup>
         <InputLeftAddon children="KSSHA-" />
-        <Input placeholder="BBGWEH802" onChange={handleSerial} />
+        <Input
+          placeholder="BBGWEH802"
+          value={serialNumber}
+          onChange={handleSerial}
+        />
       </InputGroup>
       {error ? (
         <Text color="red" paddingStart="5px" marginTop="10px">
@@ -103,17 +125,29 @@ export default function CheckStatus() {
       >
         Check Status
       </Button>
-      {userDetails ? <UserDetails userDetails={userDetails} /> : null}
+      {userDetails ? (
+        <UserDetails
+          userDetails={userDetails}
+          setUserDetails={setUserDetails}
+          setSerialNumber={setSerialNumber}
+        />
+      ) : null}
     </Container>
   );
 }
 
-function UserDetails({ userDetails }: { userDetails: UserStatusDetails }) {
+function UserDetails({
+  userDetails,
+  setUserDetails,
+  setSerialNumber,
+}: {
+  userDetails: UserStatusDetails;
+  setUserDetails: (value: UserStatusDetails | null) => void;
+  setSerialNumber: (value: string) => void;
+}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [message, setMessage] = useState("User Checked in Successfully");
-
-  const router = useRouter();
+  const [message, setMessage] = useState("");
 
   async function checkIn() {
     try {
@@ -125,8 +159,11 @@ function UserDetails({ userDetails }: { userDetails: UserStatusDetails }) {
 
       await postDataWithRetries(payload, url);
       setMessage("User Checked in Successfully");
+      setLoading(false);
       await delay(4000);
       setMessage("");
+      setUserDetails(null);
+      setSerialNumber("");
     } catch (err: any) {
       console.log(err);
       if (err.code === "ERR_NETWORK") {
@@ -176,6 +213,7 @@ function UserDetails({ userDetails }: { userDetails: UserStatusDetails }) {
         width="100%"
         backgroundColor="#514887"
         onClick={checkIn}
+        isDisabled={message ? true : false}
       >
         Check In
       </Button>
@@ -185,15 +223,11 @@ function UserDetails({ userDetails }: { userDetails: UserStatusDetails }) {
         </Text>
       ) : null}
       {message ? (
-        <Text
-          color="green"
-          as="b"
-          paddingStart="5px"
-          marginTop="10px"
-          textAlign="center"
-        >
-          {message}
-        </Text>
+        <Container centerContent marginTop="10px">
+          <Text color="green" as="b" paddingStart="5px" textAlign="center">
+            {message}
+          </Text>
+        </Container>
       ) : null}
     </div>
   );
