@@ -145,7 +145,7 @@ export default function RegistrationForm({
           <Button text="Submit" disabled={loading} />
         </div>
         <p className="text-sm text-center mt-2">
-          By submitting you agree our{" "}
+          By submitting you agree to our{" "}
           <span className="text-blue-600 cursor-pointer" onClick={onOpen}>
             Privacy Policy
           </span>
