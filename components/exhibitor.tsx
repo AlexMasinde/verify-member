@@ -1,6 +1,6 @@
 import { useExhibitorContext } from "@/contexts/exhibitorContext";
 import delay from "@/utils/delay";
-import postDataWithRetries from "@/utils/request";
+import { postDataWithRetries } from "@/utils/request";
 import { Exhibitor } from "@/utils/types";
 
 export default function Exhibitor({
