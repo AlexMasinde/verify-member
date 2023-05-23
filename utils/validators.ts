@@ -148,10 +148,7 @@ function stringValidator(errors: Errors, value: string, field: keyof Errors) {
       break;
   }
 
-  const lettersSpacesRegex = /^[a-zA-Z\s]+$/;
   if (value.trim() === "") {
     errors[field] = emptyMessage;
-  } else if (!lettersSpacesRegex.test(value)) {
-    errors[field] = invalidMessage;
   }
 }
