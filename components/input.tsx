@@ -14,7 +14,7 @@ export default function Input({
   type?: string;
 }) {
   return (
-    <div className="mt-[12px] text-[14px] mb-[5px] opacity-70">
+    <div className="mt-[12px] text-[14px] mb-[5px]">
       <p>{inputLabel}</p>
       <p
         className={`text-[14px] mb-[5px]  ${

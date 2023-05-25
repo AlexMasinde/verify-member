@@ -8,6 +8,7 @@ import { registerValidate } from "@/utils/validators";
 import Checkbox from "./checkbox";
 import { useDisclosure } from "@chakra-ui/react";
 import PrivacyModal from "./modal";
+import CountyDropdown from "./dropdown";
 
 export default function RegistrationForm({
   userData,
@@ -89,6 +90,13 @@ export default function RegistrationForm({
     setShowPayment(true);
   }
 
+  function handleCountyOption(county: string) {
+    setUserData({ ...userData, county: county });
+    if (inputErrors && inputErrors.county) {
+      setInputErrors({ ...inputErrors, county: "" });
+    }
+  }
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -123,11 +131,10 @@ export default function RegistrationForm({
             error={inputErrors?.tscNumber ? inputErrors?.tscNumber : ""}
             value={userData.tscNumber}
           />
-          <Input
+          <CountyDropdown
+            setCounty={handleCountyOption}
             inputLabel="County"
-            onChange={handleCounty}
             error={inputErrors?.county ? inputErrors?.county : ""}
-            value={userData.county}
           />
           <Input
             inputLabel="Sub County"
@@ -136,12 +143,7 @@ export default function RegistrationForm({
             value={userData.subCounty}
           />
         </div>
-        {/* <Checkbox
-          confirmedTSCDeduction={userData.confirmedTSCDeduction}
-          handleChange={handleCheckbox}
-          checkboxLabel="Are you deducted monthly contributions to the Association by TSC"
-        /> */}
-        <div className="flex flex-col items-center mt-2">
+        <div className="flex flex-col items-center mt-[12px]">
           <Button text="Submit" disabled={loading} />
         </div>
         <p className="text-sm text-center mt-2">
