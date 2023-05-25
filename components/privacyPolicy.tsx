@@ -89,12 +89,6 @@ export default function PrivacyPolicy() {
           support@kssha.co.ke
         </p>
         <br></br>
-        <p>
-          If you have any questions or concerns about this privacy policy or our
-          use of your personal information, please contact us at
-          support@kssha.co.ke
-        </p>
-        <br></br>
         By using our website, you signify your acceptance of this privacy
         policy. If you do not agree to this policy, please do not use our
         website. Your continued use of the website following the posting of
