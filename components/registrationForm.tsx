@@ -7,8 +7,10 @@ import Button from "./button";
 import { registerValidate } from "@/utils/validators";
 import Checkbox from "./checkbox";
 import { useDisclosure } from "@chakra-ui/react";
-import PrivacyModal from "./modal";
+
 import CountyDropdown from "./dropdown";
+import AppModal from "./modal";
+import PrivacyPolicy from "./privacyPolicy";
 
 export default function RegistrationForm({
   userData,
@@ -152,7 +154,14 @@ export default function RegistrationForm({
             Privacy Policy
           </span>
         </p>
-        <PrivacyModal isOpen={isOpen} onClose={onClose} onOpen={onOpen} />
+        <AppModal
+          isOpen={isOpen}
+          onClose={onClose}
+          onOpen={onOpen}
+          header="Privacy Policy"
+        >
+          <PrivacyPolicy />
+        </AppModal>
       </form>
     </div>
   );

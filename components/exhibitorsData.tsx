@@ -4,14 +4,20 @@ import { createPortal } from "react-dom";
 import Button from "./button";
 import ExhibitorsTable from "./exhibitorsTable";
 import ModalComponent from "./modalComponent";
+import AppModal from "./modal";
+import PrivacyPolicy from "./privacyPolicy";
 
 import { api } from "@/api";
 
 import { ExhibitorResponse } from "@/utils/types";
 import DashboardTop from "./dashboardTop";
 import SearchInput from "./searchInput";
+import { useDisclosure } from "@chakra-ui/react";
+import ResendEmail from "./resend";
 
 export default function ExhibitorsData() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const {
     exhibitors,
     loading,
@@ -74,7 +80,7 @@ export default function ExhibitorsData() {
 
   return (
     <div className="pat min-h-[100vh] flex flex-col items-center pb-8">
-      <DashboardTop />
+      <DashboardTop onOpen={onOpen} />
       <div className="bg-white w-[95%] mx-4 rounded-lg shadow-lg shadow-[rgba(81, 72, 135, 1)] p-[29px]">
         <div className="flex justify-between mb-[24px]">
           <div>
@@ -105,6 +111,14 @@ export default function ExhibitorsData() {
         ) : null}
       </div>
       {showModal && createPortal(<ModalComponent />, document.body)}
+      <AppModal
+        isOpen={isOpen}
+        onClose={onClose}
+        onOpen={onOpen}
+        header="Resend Email"
+      >
+        <ResendEmail />
+      </AppModal>
     </div>
   );
 }

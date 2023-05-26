@@ -11,6 +11,10 @@ import logo from "../public/images/kssha_logo.png";
 import { postDataWithRetries } from "@/utils/request";
 import { useExhibitorContext } from "@/contexts/exhibitorContext";
 
+import TextContainer from "./textContainer";
+import { Text } from "@chakra-ui/react";
+import Link from "next/link";
+
 export default function Login() {
   const { dispatch } = useExhibitorContext();
 
@@ -53,6 +57,7 @@ export default function Login() {
         password: password,
       };
       const response = await postDataWithRetries(data, url);
+      console.log(response);
       const accessToken = response.jwt;
       const userData = {
         email: response.user.email,
@@ -79,13 +84,17 @@ export default function Login() {
   return (
     <div className="w-full h-[100vh] flex flex-col items-center justify-center pat">
       <div className="md:w-[400px] shadow-lg md:shadow-[rgba(81, 72, 135, 1)] bg-white rounded-[8px] p-[20px] w-full xs:h-full md:h-fit">
-        <div className="flex flex-col items-center">
-          <Image src={logo} alt="KSSHA logo" />
-          <p className="text-center text-sm text-gray-400 mt-[20px]">
-            Enter your email and password to access admin dashboard
-          </p>
-        </div>
-        <form onSubmit={handleSubmit}>
+        <TextContainer>
+          <Link href="/">
+            <Image
+              src={logo}
+              alt="KSSHA logo"
+              style={{ marginBottom: "10px" }}
+            />
+          </Link>
+          <Text as="b">Login</Text>
+        </TextContainer>
+        <form onSubmit={handleSubmit} style={{ marginTop: "20px" }}>
           <Input
             inputLabel="Email"
             onChange={handleEmail}
