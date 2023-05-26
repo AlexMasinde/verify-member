@@ -25,7 +25,7 @@ export default function DashboardTop({ onOpen }: { onOpen: () => void }) {
           <Button
             text="Resend Email"
             disabled={false}
-            backgroundColor="#F64E60"
+            backgroundColor="green"
           />
         </div>
         <div onClick={registration}>

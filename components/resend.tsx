@@ -53,7 +53,6 @@ export default function ResendEmail() {
       const URL = "/registered-member/resend-email";
       const payload = { email: email, tscNumber: tscNumber };
       const response = await postDataWithRetries(payload, URL, accessToken);
-
       setMessage(response.message);
       setLoading(false);
       setEmail("");
