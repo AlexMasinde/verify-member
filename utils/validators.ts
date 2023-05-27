@@ -15,7 +15,7 @@ export function loginValidate(loginData: LoginData) {
   }
 
   if (password.trim() === "") {
-    errors.password = "Please enter your email address";
+    errors.password = "Please enter your password";
   } else if (password.length < 6) {
     errors.password = "Password should be at least 6 characters";
   }
