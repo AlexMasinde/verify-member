@@ -2,7 +2,7 @@ import { useExhibitorContext } from "@/contexts/exhibitorContext";
 import { useRouter } from "next/router";
 import Button from "./button";
 
-export default function DashboardTop() {
+export default function DashboardTop({ onOpen }: { onOpen: () => void }) {
   const { dispatch, user } = useExhibitorContext();
   const router = useRouter();
 
@@ -21,6 +21,13 @@ export default function DashboardTop() {
         <p className="text-[#B5B5C3] text-sm mt-[7px]">{user?.name}</p>
       </div>
       <div className="flex">
+        <div className="mr-[10px]" onClick={onOpen}>
+          <Button
+            text="Resend Email"
+            disabled={false}
+            backgroundColor="green"
+          />
+        </div>
         <div onClick={registration}>
           <Button text="Registration" disabled={false} />
         </div>

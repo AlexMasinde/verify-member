@@ -11,7 +11,8 @@ import { postDataWithRetries } from "@/utils/request";
 import delay from "@/utils/delay";
 import useSpaces from "@/hooks/getSpaces";
 import { useDisclosure } from "@chakra-ui/react";
-import PrivacyModal from "./modal";
+import AppModal from "./modal";
+import PrivacyPolicy from "./privacyPolicy";
 
 export default function ExhibitorRegistrationForm({
   exhibitorData,
@@ -213,7 +214,14 @@ export default function ExhibitorRegistrationForm({
             Privacy Policy
           </span>
         </p>
-        <PrivacyModal isOpen={isOpen} onClose={onClose} onOpen={onOpen} />
+        <AppModal
+          isOpen={isOpen}
+          onClose={onClose}
+          onOpen={onOpen}
+          header="Privacy Policy"
+        >
+          <PrivacyPolicy />
+        </AppModal>
       </form>
     </div>
   );
