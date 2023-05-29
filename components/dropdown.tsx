@@ -41,7 +41,6 @@ export default function CountyDropdown({
   function handleSearchInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (!isOpen) setIsOpen(true);
     setSearchValue(e.target.value);
-    setCounty(e.target.value);
   }
 
   function handleDropdownToggle() {
@@ -69,6 +68,7 @@ export default function CountyDropdown({
       </p>
       <input
         type="text"
+        placeholder="Search..."
         className="border border-gray-300 px-[18px] py-2 rounded-[6px] outline-none w-full lg:w-400 sm:ml-[0%]"
         value={searchValue}
         onChange={handleSearchInputChange}

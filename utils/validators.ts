@@ -139,7 +139,7 @@ function stringValidator(errors: Errors, value: string, field: keyof Errors) {
       invalidMessage = "Sub county should contain letters and spaces only";
       break;
     case "county":
-      emptyMessage = "Please provide your county";
+      emptyMessage = "Please select your county from the list";
       invalidMessage = "County should contain letters and spaces only";
       break;
     case "school":
