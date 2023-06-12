@@ -52,10 +52,10 @@ export default function Delegates() {
         county: userData.county.toUpperCase(),
         subCounty: userData.subCounty.toUpperCase(),
         phoneNumber: userData.phoneNumber,
-        tscNumber: userData.tscNumber,
+        tscNumber: userData.tscNumber.trim(),
         email: userData.email,
         confirmedTSCDeduction: false,
-        TransID: code,
+        TransID: code.trim(),
       };
       const url = "/payment/verify";
       await postDataWithRetries(payload, url);
