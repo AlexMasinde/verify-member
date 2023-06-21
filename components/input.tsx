@@ -1,4 +1,5 @@
 import React from "react";
+import { Input as ChakraInput } from "@chakra-ui/react";
 
 export default function Input({
   inputLabel,
@@ -23,11 +24,12 @@ export default function Input({
       >
         {error}
       </p>
-      <input
+      <ChakraInput
         value={value}
         onChange={onChange}
-        type={type ? type : "text"}
-        className="border border-gray-300 px-[18px] py-2 rounded-[6px] outline-none w-full lg:w-400 sm:ml-[0%]"
+        size="md"
+        type="text"
+        className="rounded-md"
       />
     </div>
   );

@@ -12,6 +12,7 @@ export type Errors = {
   county?: string;
   email?: string;
   phoneNumber?: string;
+  designation?: string;
 };
 
 export type ExhibitorErrors = {
@@ -41,6 +42,7 @@ export type UserData = {
   subCounty: string;
   email: string;
   phoneNumber: string;
+  designation: string;
   // confirmedTSCDeduction: boolean;
 };
 

@@ -3,7 +3,6 @@ import { useState } from "react";
 import TextDetails from "@/components/textDetails";
 import RegistrationForm from "@/components/registrationForm";
 import Payment from "@/components/payment";
-import { api } from "@/api";
 import { postDataWithRetries } from "@/utils/request";
 import delay from "@/utils/delay";
 
@@ -16,8 +15,10 @@ export default function Delegates() {
     tscNumber: "",
     email: "",
     phoneNumber: "",
+    designation: "",
   });
   const [showPayment, setShowPayment] = useState(false);
+  const [formType, setFormType] = useState("delegate");
   const [code, setCode] = useState("");
   const [codeError, setCodeError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -46,7 +47,8 @@ export default function Delegates() {
     try {
       console.log({ ...userData, TransID: code });
       setLoading(true);
-      const payload = {
+
+      const delegatePayload = {
         name: userData.name.toUpperCase(),
         school: userData.school.toUpperCase(),
         county: userData.county.toUpperCase(),
@@ -57,6 +59,19 @@ export default function Delegates() {
         confirmedTSCDeduction: false,
         TransID: code.trim(),
       };
+
+      const guestPayload = {
+        name: userData.name.toUpperCase(),
+        county: userData.county.toUpperCase(),
+        subCounty: userData.subCounty.toUpperCase(),
+        phoneNumber: userData.phoneNumber,
+        designation: userData.designation.toUpperCase(),
+        email: userData.email,
+        TransID: code.trim(),
+      };
+
+      const payload = formType === "delegate" ? delegatePayload : guestPayload;
+
       const url = "/payment/verify";
       await postDataWithRetries(payload, url);
       setSuccessMessage(
@@ -72,6 +87,7 @@ export default function Delegates() {
         county: "",
         school: "",
         subCounty: "",
+        designation: "",
       });
       setCode("");
       setShowPayment(false);
@@ -110,6 +126,8 @@ export default function Delegates() {
           />
         ) : (
           <RegistrationForm
+            formType={formType}
+            setFormType={setFormType}
             userData={userData}
             setUserData={setUserData}
             setShowPayment={setShowPayment}

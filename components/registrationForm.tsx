@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import Input from "./input";
 import Button from "./button";
 
-import { registerValidate } from "@/utils/validators";
-import Checkbox from "./checkbox";
+import { guestValidate, registerValidate } from "@/utils/validators";
+import { Select } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 
 import CountyDropdown from "./dropdown";
@@ -17,13 +17,18 @@ export default function RegistrationForm({
   setUserData,
   setShowPayment,
   loading,
+  formType,
+  setFormType,
 }: {
   userData: UserData;
   setUserData: (value: UserData) => void;
   setShowPayment: (value: boolean) => void;
+  setFormType: (value: string) => void;
+  formType: string;
   loading: boolean;
 }) {
   const [inputErrors, setInputErrors] = useState<Errors>({});
+  const [searchValue, setSearchValue] = useState("");
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -41,10 +46,10 @@ export default function RegistrationForm({
     }
   }
 
-  function handleCounty(event: React.ChangeEvent<HTMLInputElement>) {
-    setUserData({ ...userData, county: event.target.value });
-    if (inputErrors && inputErrors.county) {
-      setInputErrors({ ...inputErrors, county: "" });
+  function handleDesignation(event: React.ChangeEvent<HTMLInputElement>) {
+    setUserData({ ...userData, designation: event.target.value });
+    if (inputErrors && inputErrors.designation) {
+      setInputErrors({ ...inputErrors, designation: "" });
     }
   }
 
@@ -83,7 +88,10 @@ export default function RegistrationForm({
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const { valid, errors } = registerValidate(userData);
+    const { valid, errors } =
+      formType === "delegate"
+        ? registerValidate(userData)
+        : guestValidate(userData);
     if (!valid) {
       setInputErrors(errors);
       console.log(errors);
@@ -99,16 +107,51 @@ export default function RegistrationForm({
     }
   }
 
+  function handleOptionChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    setInputErrors({});
+    setUserData({
+      tscNumber: "",
+      name: "",
+      subCounty: "",
+      county: "",
+      designation: "",
+      email: "",
+      phoneNumber: "",
+      school: "",
+    });
+    setFormType(event.target.value);
+    setSearchValue("");
+  }
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <div className="mx-auto w-[100%]">
+          <div className="mt-[12px] text-[14px] mb-[5px]">
+            <p className="text-[14px] mb-[5px]">Registration Type</p>
+            <Select
+              value={formType}
+              onChange={handleOptionChange}
+              className="border-gray-300"
+            >
+              <option value="delegate">Delegate</option>
+              <option value="guest">Guest</option>
+            </Select>
+          </div>
           <Input
             inputLabel="Full Names"
             onChange={handleName}
             error={inputErrors?.name ? inputErrors?.name : ""}
             value={userData.name}
           />
+          {formType === "guest" && (
+            <Input
+              inputLabel="Designation"
+              onChange={handleDesignation}
+              error={inputErrors?.designation ? inputErrors?.designation : ""}
+              value={userData.designation}
+            />
+          )}
           <Input
             inputLabel="Email Address"
             onChange={handleEmail}
@@ -121,28 +164,35 @@ export default function RegistrationForm({
             error={inputErrors?.phoneNumber ? inputErrors?.phoneNumber : ""}
             value={userData.phoneNumber}
           />
-          <Input
-            inputLabel="School"
-            onChange={handleSchool}
-            error={inputErrors?.school ? inputErrors?.school : ""}
-            value={userData.school}
-          />
-          <Input
-            inputLabel="TSC Number"
-            onChange={handleTscNumber}
-            error={inputErrors?.tscNumber ? inputErrors?.tscNumber : ""}
-            value={userData.tscNumber}
-          />
+
+          {formType === "delegate" && (
+            <Input
+              inputLabel="School"
+              onChange={handleSchool}
+              error={inputErrors?.school ? inputErrors?.school : ""}
+              value={userData.school}
+            />
+          )}
+          {formType === "delegate" && (
+            <Input
+              inputLabel="TSC Number"
+              onChange={handleTscNumber}
+              error={inputErrors?.tscNumber ? inputErrors?.tscNumber : ""}
+              value={userData.tscNumber}
+            />
+          )}
           <CountyDropdown
             setCounty={handleCountyOption}
             inputLabel="County"
             error={inputErrors?.county ? inputErrors?.county : ""}
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
           />
           <Input
             inputLabel="Sub County"
             onChange={handleSubCounty}
             error={inputErrors?.subCounty ? inputErrors?.subCounty : ""}
-            value={userData.subCounty}
+            value={userData.subCounty ?? ""}
           />
         </div>
         <div className="flex flex-col items-center mt-[12px]">

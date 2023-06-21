@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import Image from "next/image";
 import Head from "next/head";
-import logo from "../public/images/kssha_logo.png";
 import Delegates from "@/components/delegates";
 import Exhibitors from "@/components/exhibitors";
 
