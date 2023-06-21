@@ -154,7 +154,7 @@ export default function ExhibitorRegistrationForm({
           />
         </div>
         <p
-          className={`text-[14px] mb-[5px] mt-[8px] opacity-70 ${
+          className={`text-[14px] mb-[5px] mt-[8px] ${
             inputErrors.spaceReserved ? "text-red-700" : ""
           }`}
         >

@@ -37,7 +37,7 @@ export default function Home() {
                 showDelegates ? "bg-[#514887] text-white" : ""
               }`}
             >
-              <p>Delegate Registration</p>
+              <p>Delegate/Guest Registration</p>
             </div>
             <div
               onClick={() => setShowDelegates(false)}
