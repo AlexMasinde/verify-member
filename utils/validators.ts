@@ -1,5 +1,4 @@
 import { ExhibitorData, LoginData, LoginErrors } from "@/utils/types";
-import { counties } from "./counties";
 import { Errors, UserData, ExhibitorErrors } from "./types";
 
 export function loginValidate(loginData: LoginData) {
@@ -53,6 +52,34 @@ export function exhibitorValidate(exhibitorData: ExhibitorData) {
     errors.phoneNumber = "Please provide your phone number";
   }
 
+  return {
+    errors,
+    valid: Object.keys(errors).length < 1,
+  };
+}
+
+export function guestValidate(guestData: UserData) {
+  const { name, designation, county, subCounty, email, phoneNumber } =
+    guestData;
+
+  const errors: Errors = {};
+
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+  stringValidator(errors, name, "name");
+  stringValidator(errors, subCounty, "subCounty");
+  stringValidator(errors, county, "county");
+  stringValidator(errors, designation, "school");
+
+  if (email.trim() === "") {
+    errors.email = "Please enter your email address";
+  } else if (!emailRegex.test(email)) {
+    errors.email = "Please provide a valid email address";
+  }
+
+  if (phoneNumber.trim() === "") {
+    errors.phoneNumber = "Please provide your phone number";
+  }
   return {
     errors,
     valid: Object.keys(errors).length < 1,

@@ -12,7 +12,7 @@ export default function TextArea({
   return (
     <div className="mt-[12px]">
       <p
-        className={`text-[14px] mb-[5px] opacity-70 ${
+        className={`text-[14px] mb-[5px] ${
           error.trim() === "" ? "" : "text-red-700"
         }`}
       >

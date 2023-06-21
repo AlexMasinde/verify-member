@@ -7,12 +7,15 @@ export default function CountyDropdown({
   setCounty,
   inputLabel,
   error,
+  searchValue,
+  setSearchValue,
 }: {
   inputLabel: string;
   error: string;
   setCounty: (value: string) => void;
+  setSearchValue: (value: string) => void;
+  searchValue: string;
 }) {
-  const [searchValue, setSearchValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -55,7 +58,7 @@ export default function CountyDropdown({
 
   return (
     <div
-      className="relative inline-block mt-[10px] text-[14px] mb-[5px] w-full lg:w-400 sm:ml-[0%]"
+      className="relative inline-block mt-[10px] text-[14px] mb-[5px] w-full lg:w-400 sm:ml-[0%] z-50"
       ref={dropdownRef}
     >
       <p>{inputLabel}</p>

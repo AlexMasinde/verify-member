@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import Image from "next/image";
 import Head from "next/head";
-import logo from "../public/images/kssha_logo.png";
 import Delegates from "@/components/delegates";
 import Exhibitors from "@/components/exhibitors";
 
@@ -39,7 +37,7 @@ export default function Home() {
                 showDelegates ? "bg-[#514887] text-white" : ""
               }`}
             >
-              <p>Delegate Registration</p>
+              <p>Delegate/Guest Registration</p>
             </div>
             <div
               onClick={() => setShowDelegates(false)}
