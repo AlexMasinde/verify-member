@@ -9,7 +9,7 @@ export function loginValidate(loginData: LoginData) {
 
   if (email.trim() === "") {
     errors.email = "Please enter your email address";
-  } else if (!emailRegex.test(email)) {
+  } else if (!emailRegex.test(email.trim())) {
     errors.email = "Please provide a valid email address";
   }
 
