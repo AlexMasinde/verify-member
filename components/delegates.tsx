@@ -55,7 +55,7 @@ export default function Delegates() {
         subCounty: userData.subCounty.toUpperCase(),
         phoneNumber: userData.phoneNumber,
         tscNumber: userData.tscNumber.trim(),
-        email: userData.email,
+        email: userData.email.trim(),
         confirmedTSCDeduction: false,
         TransID: code.trim(),
       };
@@ -66,7 +66,7 @@ export default function Delegates() {
         subCounty: userData.subCounty.toUpperCase(),
         phoneNumber: userData.phoneNumber,
         designation: userData.designation.toUpperCase(),
-        email: userData.email,
+        email: userData.email.trim(),
         TransID: code.trim(),
       };
 

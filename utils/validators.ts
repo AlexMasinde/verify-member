@@ -44,7 +44,7 @@ export function exhibitorValidate(exhibitorData: ExhibitorData) {
 
   if (email.trim() === "") {
     errors.email = "Please enter your email address";
-  } else if (!emailRegex.test(email)) {
+  } else if (!emailRegex.test(email.trim())) {
     errors.email = "Please provide a valid email address";
   }
 
@@ -73,7 +73,7 @@ export function guestValidate(guestData: UserData) {
 
   if (email.trim() === "") {
     errors.email = "Please enter your email address";
-  } else if (!emailRegex.test(email)) {
+  } else if (!emailRegex.test(email.trim())) {
     errors.email = "Please provide a valid email address";
   }
 
@@ -134,7 +134,7 @@ export function registerValidate(userData: UserData) {
 
   if (email.trim() === "") {
     errors.email = "Please enter your email address";
-  } else if (!emailRegex.test(email)) {
+  } else if (!emailRegex.test(email.trim())) {
     errors.email = "Please provide a valid email address";
   }
 
