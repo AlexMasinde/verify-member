@@ -4,16 +4,18 @@ import { loginValidate } from "@/utils/validators";
 
 import Image from "next/image";
 import { LoginErrors } from "@/utils/types";
-import Button from "./button";
-import Input from "./input";
-import logo from "../public/images/kssha_logo.png";
+import {
+  Button,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Text,
+} from "@chakra-ui/react";
+import { EmailIcon, LockIcon } from "@chakra-ui/icons";
+import logo from "../public/images/uda.png";
 
 import { postDataWithRetries } from "@/utils/request";
 import { useExhibitorContext } from "@/contexts/exhibitorContext";
-
-import TextContainer from "./textContainer";
-import { Text } from "@chakra-ui/react";
-import Link from "next/link";
 
 export default function Login() {
   const { dispatch } = useExhibitorContext();
@@ -36,28 +38,20 @@ export default function Login() {
     setInputErrors({ ...inputErrors, email: "" });
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
+  async function handleSubmit() {
     const { errors, valid } = loginValidate({ email, password });
-
     if (!valid) {
       setInputErrors(errors);
-      console.log(errors);
       return;
     }
-
     try {
       setLoading(true);
-
       const url = "/auth/local";
-
       const data = {
         identifier: email,
         password: password,
       };
       const response = await postDataWithRetries(data, url);
-      console.log(response);
       const accessToken = response.jwt;
       const userData = {
         email: response.user.email,
@@ -66,7 +60,10 @@ export default function Login() {
       localStorage.setItem("auth_token", accessToken);
       setEmail("");
       setPassword("");
-      dispatch({ type: "SET_USER", payload: userData });
+      dispatch({
+        type: "SET_USER",
+        payload: { ...userData, authToken: accessToken },
+      });
     } catch (err: any) {
       console.log(err);
       if (err.code === "ERR_NETWORK") {
@@ -82,40 +79,67 @@ export default function Login() {
   }
 
   return (
-    <div className="w-full h-[100vh] flex flex-col items-center justify-center pat">
-      <div className="md:w-[400px] shadow-lg md:shadow-[rgba(81, 72, 135, 1)] bg-white rounded-[8px] p-[20px] w-full xs:h-full md:h-fit">
-        <TextContainer>
-          <Link href="/">
-            <Image
-              src={logo}
-              alt="KSSHA logo"
-              style={{ marginBottom: "10px" }}
+    <div className="w-full h-[100vh] flex flex-col items-center justify-center">
+      <div className="md:w-[400px] md:shadow-md rounded-[8px] p-[20px] w-full md:h-fit">
+        <div className="flex flex-col items-center">
+          <Image
+            src={logo}
+            width={42}
+            alt="KSSHA logo"
+            style={{ marginBottom: "10px" }}
+          />
+          <Text fontSize="md" fontWeight="semibold">
+            Login to Access Attendance Dashboard
+          </Text>
+        </div>
+        <form style={{ marginTop: "20px" }}>
+          <InputGroup className="mb-4">
+            <InputLeftElement pointerEvents="none">
+              <EmailIcon color="gray.300" />
+            </InputLeftElement>
+            <Input
+              isInvalid={inputErrors.email ? true : false}
+              placeholder={
+                inputErrors.email ? inputErrors.email : "example@email.com"
+              }
+              value={email}
+              onChange={handleEmail}
+              _placeholder={inputErrors.email ? { color: "#E53E3E" } : {}}
             />
-          </Link>
-          <Text as="b">Login</Text>
-        </TextContainer>
-        <form onSubmit={handleSubmit} style={{ marginTop: "20px" }}>
-          <Input
-            inputLabel="Email"
-            onChange={handleEmail}
-            error={inputErrors?.email ? inputErrors?.email : ""}
-            value={email}
-          />
-          <Input
-            inputLabel="Password"
-            onChange={handlePassword}
-            error={inputErrors?.password ? inputErrors?.password : ""}
-            value={password}
-            type="password"
-          />
+          </InputGroup>
+          <InputGroup className="mb-4">
+            <InputLeftElement pointerEvents="none">
+              <LockIcon color="gray.300" />
+            </InputLeftElement>
+            <Input
+              isInvalid={inputErrors.password ? true : false}
+              placeholder={
+                inputErrors.password ? inputErrors.password : "*******"
+              }
+              value={password}
+              onChange={handlePassword}
+              type="password"
+              _placeholder={inputErrors.password ? { color: "#E53E3E" } : {}}
+            />
+          </InputGroup>
           <div className="flex flex-col items-center mt-[10px]">
-            <Button text="Login" disabled={loading} />
+            <Button
+              isLoading={loading}
+              colorScheme="primary"
+              variant="solid"
+              marginTop="10px"
+              width="100%"
+              backgroundColor="#179847"
+              onClick={handleSubmit}
+            >
+              Login
+            </Button>
           </div>
-          <div>
-            {error ? (
-              <p className="text-center text-red-500 text-sm mt-3">{error}</p>
-            ) : null}
-          </div>
+          {error ? (
+            <Text textAlign="center" color="red" marginTop="8px">
+              {error}
+            </Text>
+          ) : null}
         </form>
       </div>
     </div>

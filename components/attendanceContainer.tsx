@@ -1,14 +1,14 @@
 import { useExhibitorContext } from "@/contexts/exhibitorContext";
 import AppLoading from "./appLoading";
-import ExhibitorsData from "./exhibitorsData";
 import Login from "./login";
+import CheckAttendance from "@/pages/checkAttendance";
 
-export default function ExhibitorsContainer() {
+export default function AttendanceContainer() {
   const { appLoading } = useExhibitorContext();
   return <>{appLoading ? <AppLoading /> : <CheckAuth />}</>;
 }
 
 function CheckAuth() {
   const { user } = useExhibitorContext();
-  return <>{user ? <ExhibitorsData /> : <Login />}</>;
+  return <>{user ? <CheckAttendance /> : <Login />}</>;
 }

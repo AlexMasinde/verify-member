@@ -1,15 +1,11 @@
 import { api } from "@/api";
 import React, { createContext, useContext, useEffect, useReducer } from "react";
 
-import { Exhibitor, UpdateExhibitor, UserObject } from "@/utils/types";
-import AppLoading from "@/components/appLoading";
+import { UpdateExhibitor, UserObject } from "@/utils/types";
 
 type ExhibitorAction =
   | { type: "SET_LOADING"; payload: boolean }
   | { type: "SET_ERROR"; payload: string }
-  | { type: "SET_EXHIBITORS"; payload: Exhibitor[] }
-  | { type: "SHOW_MODAL"; payload: boolean }
-  | { type: "SET_SELECTED_EXHIBITOR"; payload: Exhibitor }
   | { type: "SET_DASH_ERROR"; payload: string }
   | { type: "SET_DASH_SUCCESS"; payload: string }
   | { type: "UPDATE_EXHIBITOR"; payload: UpdateExhibitor }
@@ -20,10 +16,7 @@ type ExhibitorContextType = {
   loading: boolean;
   error: string;
   appLoading: boolean;
-  exhibitors: Exhibitor[];
-  showModal: boolean;
   user: UserObject | null;
-  selectedExhibitor: Exhibitor;
   dashSuccess: string;
   dashError: string;
   dispatch: React.Dispatch<ExhibitorAction>;
@@ -32,23 +25,8 @@ type ExhibitorContextType = {
 const initialState: ExhibitorContextType = {
   loading: true,
   error: "",
-  exhibitors: [],
   user: null,
-  showModal: false,
   appLoading: true,
-  selectedExhibitor: {
-    email: "",
-    phoneNumber: "",
-    contactPerson: "",
-    description: "",
-    spaceReserved: "",
-    createdAt: "",
-    updatedAt: "",
-    publishedAt: "",
-    name: "",
-    reservationStatus: "",
-    identifier: "",
-  },
   dispatch: () => {},
   dashError: "",
   dashSuccess: "",
@@ -69,12 +47,6 @@ function exhibitorsReducer(
       return { ...state, loading: action.payload };
     case "SET_ERROR":
       return { ...state, error: action.payload };
-    case "SET_EXHIBITORS":
-      return { ...state, exhibitors: action.payload };
-    case "SHOW_MODAL":
-      return { ...state, showModal: action.payload };
-    case "SET_SELECTED_EXHIBITOR":
-      return { ...state, selectedExhibitor: action.payload, showModal: true };
     case "SET_DASH_ERROR":
       return { ...state, dashError: action.payload };
     case "SET_DASH_SUCCESS":
@@ -83,18 +55,6 @@ function exhibitorsReducer(
       return { ...state, user: action.payload };
     case "APP_LOADING":
       return { ...state, appLoading: action.payload };
-    case "UPDATE_EXHIBITOR":
-      const updatedExhibitor = action.payload;
-      const newExhibitors = state.exhibitors.map((exhibitor) => {
-        if (exhibitor.identifier === updatedExhibitor.identifier) {
-          return {
-            ...exhibitor,
-            reservationStatus: updatedExhibitor.reservationStatus,
-          };
-        }
-        return exhibitor;
-      });
-      return { ...state, exhibitors: newExhibitors };
 
     default:
       return state;
@@ -134,6 +94,7 @@ export default function ExhibitorContextProvider({
         const userObject: UserObject = {
           name: userData.username,
           email: userData.email,
+          authToken: userToken,
         };
         dispatch({
           type: "SET_USER",

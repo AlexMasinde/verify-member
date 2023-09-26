@@ -92,4 +92,5 @@ export type UpdateExhibitor = {
 export type UserObject = {
   name: string;
   email: string;
+  authToken: string;
 };
