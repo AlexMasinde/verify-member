@@ -125,12 +125,18 @@ export default function CheckAttendance() {
 
   return (
     <Container maxW="400px" marginTop={isMobile ? "30px" : "10%"}>
-      <Text fontWeight="semibold" marginBottom="10px">
-        Total Members: {statistics.totalMembers}
-      </Text>
-      <Text fontWeight="semibold" marginBottom="10px">
-        Total Check-ins: {statistics.totalCheckins}
-      </Text>
+      <div className="border border-grey-300 rounded-md p-2 mb-2">
+        <Text fontSize="md">Total Members</Text>
+        <Text fontSize="lg" fontWeight="semibold">
+          {statistics.totalMembers}
+        </Text>
+      </div>
+      <div className="border border-grey-300 rounded-md p-2 mb-2">
+        <Text fontSize="md">Total Check-ins</Text>
+        <Text fontSize="lg" fontWeight="semibold">
+          {statistics.totalCheckins}
+        </Text>
+      </div>
       <TextContainer>
         <Link href="/">
           <Image src={logo} alt="UDA Logo" width={42} />
