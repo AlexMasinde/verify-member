@@ -125,58 +125,60 @@ export default function CheckAttendance() {
   }
 
   return (
-    <div className="bg-red-200 h-screen flex flex-col items-center justify-center">
-      <Container maxW="400px">
-        <div className="border border-grey-300 rounded-md p-2 mb-2">
-          <Text fontSize="md">Total Members</Text>
-          <Text fontSize="lg" fontWeight="semibold">
-            {statistics.totalMembers}
-          </Text>
-        </div>
-        <div className="border border-grey-300 rounded-md p-2 mb-2">
-          <Text fontSize="md">Total Check-ins</Text>
-          <Text fontSize="lg" fontWeight="semibold">
-            {statistics.totalCheckins}
-          </Text>
-        </div>
-        <TextContainer>
-          <Link href="/">
-            <Image src={logo} alt="UDA Logo" width={42} />
-          </Link>
-          <Text as="b">Check Attendee Status</Text>
-        </TextContainer>
-        <Divider height="0px" />
-        <InputGroup>
-          <InputLeftAddon children="ID No" />
-          <Input
-            isInvalid={error ? true : false}
-            value={idNumber}
-            onChange={handleId}
-            placeholder={error ? error : "29761715"}
-            _placeholder={error ? { color: "#E53E3E" } : {}}
-          />
-        </InputGroup>
-        <Button
-          isLoading={loading}
-          colorScheme="primary"
-          variant="solid"
-          marginTop="10px"
-          width="100%"
-          backgroundColor="#179847"
-          onClick={checkStatus}
-          isDisabled={userDetails ? true : false}
-        >
-          Check Status
-        </Button>
-        {userDetails ? (
-          <UserDetails
-            userDetails={userDetails}
-            setUserDetails={setUserDetails}
-            setSerialNumber={setIdNumber}
-          />
-        ) : null}
-      </Container>
-    </div>
+    <>
+      <div className="h-screen flex flex-col items-center justify-center">
+        <Container maxW="400px">
+          <div className="border border-grey-300 rounded-md p-2 mb-2">
+            <Text fontSize="md">Total Members</Text>
+            <Text fontSize="lg" fontWeight="semibold">
+              {statistics.totalMembers}
+            </Text>
+          </div>
+          <div className="border border-grey-300 rounded-md p-2 mb-2">
+            <Text fontSize="md">Total Check-ins</Text>
+            <Text fontSize="lg" fontWeight="semibold">
+              {statistics.totalCheckins}
+            </Text>
+          </div>
+          <TextContainer>
+            <Link href="/">
+              <Image src={logo} alt="UDA Logo" width={42} />
+            </Link>
+            <Text as="b">Check Attendee Status</Text>
+          </TextContainer>
+          <Divider height="0px" />
+          <InputGroup>
+            <InputLeftAddon children="ID No" />
+            <Input
+              isInvalid={error ? true : false}
+              value={idNumber}
+              onChange={handleId}
+              placeholder={error ? error : "29761715"}
+              _placeholder={error ? { color: "#E53E3E" } : {}}
+            />
+          </InputGroup>
+          <Button
+            isLoading={loading}
+            colorScheme="primary"
+            variant="solid"
+            marginTop="10px"
+            width="100%"
+            backgroundColor="#179847"
+            onClick={checkStatus}
+            isDisabled={userDetails ? true : false}
+          >
+            Check Status
+          </Button>
+          {userDetails ? (
+            <UserDetails
+              userDetails={userDetails}
+              setUserDetails={setUserDetails}
+              setSerialNumber={setIdNumber}
+            />
+          ) : null}
+        </Container>
+      </div>
+    </>
   );
 }
 
