@@ -337,7 +337,7 @@ function UserDetails({
   const { arrears } = userDetails;
 
   return (
-    <div className="mt-[20px]">
+    <div className="mt-[20px] pb-4">
       <TextContainer>
         <Text>
           <strong>Name: </strong>
