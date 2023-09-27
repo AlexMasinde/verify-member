@@ -9,7 +9,11 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { getDataWithRetries, putDataWithRetries } from "@/utils/request";
+import {
+  getDataWithRetries,
+  putDataWithRetries,
+  updateArrears,
+} from "@/utils/request";
 import logo from "../public/images/uda.png";
 import Image from "next/image";
 import Link from "next/link";
@@ -23,6 +27,8 @@ type UserStatusDetails = {
   idNumber: string;
   county: string;
   position: string;
+  arrears: number;
+  id: number;
 };
 
 export default function CheckAttendance() {
@@ -90,11 +96,14 @@ export default function CheckAttendance() {
       }
       const response = await getDataWithRetries(url, token);
       const member = response.data;
+      console.log(member);
       setUserDetails({
         fullName: member.fullName,
         idNumber: member.idNumber,
         county: member.county,
         position: member.position,
+        arrears: member.arrears,
+        id: member.id,
       });
     } catch (err: any) {
       if (err.code === "ERR_NETWORK") {
@@ -124,61 +133,63 @@ export default function CheckAttendance() {
     }
   }
 
+  function handleClear() {
+    setUserDetails(null);
+    setIdNumber("");
+  }
+
   return (
-    <>
-      <div className="h-screen flex flex-col items-center justify-center">
-        <Container maxW="400px">
-          <div className="border border-grey-300 rounded-md p-2 mb-2">
-            <Text fontSize="md">Total Members</Text>
-            <Text fontSize="lg" fontWeight="semibold">
-              {statistics.totalMembers}
-            </Text>
-          </div>
-          <div className="border border-grey-300 rounded-md p-2 mb-2">
-            <Text fontSize="md">Total Check-ins</Text>
-            <Text fontSize="lg" fontWeight="semibold">
-              {statistics.totalCheckins}
-            </Text>
-          </div>
-          <TextContainer>
-            <Link href="/">
-              <Image src={logo} alt="UDA Logo" width={42} />
-            </Link>
-            <Text as="b">Check Attendee Status</Text>
-          </TextContainer>
-          <Divider height="0px" />
-          <InputGroup>
-            <InputLeftAddon children="ID No" />
-            <Input
-              isInvalid={error ? true : false}
-              value={idNumber}
-              onChange={handleId}
-              placeholder={error ? error : "29761715"}
-              _placeholder={error ? { color: "#E53E3E" } : {}}
-            />
-          </InputGroup>
-          <Button
-            isLoading={loading}
-            colorScheme="primary"
-            variant="solid"
-            marginTop="10px"
-            width="100%"
-            backgroundColor="#179847"
-            onClick={checkStatus}
-            isDisabled={userDetails ? true : false}
-          >
-            Check Status
-          </Button>
-          {userDetails ? (
-            <UserDetails
-              userDetails={userDetails}
-              setUserDetails={setUserDetails}
-              setSerialNumber={setIdNumber}
-            />
-          ) : null}
-        </Container>
-      </div>
-    </>
+    <div className="flex flex-col items-center justify-center">
+      <Container maxW="400px">
+        <div className="border border-grey-300 rounded-md p-2 mb-2">
+          <Text fontSize="md">Total Members</Text>
+          <Text fontSize="lg" fontWeight="semibold">
+            {statistics.totalMembers}
+          </Text>
+        </div>
+        <div className="border border-grey-300 rounded-md p-2 mb-2">
+          <Text fontSize="md">Total Check-ins</Text>
+          <Text fontSize="lg" fontWeight="semibold">
+            {statistics.totalCheckins}
+          </Text>
+        </div>
+        <TextContainer>
+          <Link href="/">
+            <Image src={logo} alt="UDA Logo" width={42} />
+          </Link>
+          <Text as="b">Check Attendee Status</Text>
+        </TextContainer>
+        <Divider height="0px" />
+        <InputGroup>
+          <InputLeftAddon children="ID No" />
+          <Input
+            isInvalid={error ? true : false}
+            value={idNumber}
+            onChange={handleId}
+            placeholder={error ? error : "29761715"}
+            _placeholder={error ? { color: "#E53E3E" } : {}}
+          />
+        </InputGroup>
+        <Button
+          isLoading={loading}
+          colorScheme="primary"
+          variant="solid"
+          marginTop="10px"
+          width="100%"
+          backgroundColor="#179847"
+          onClick={userDetails ? handleClear : checkStatus}
+        >
+          {userDetails ? "Clear" : "Check Status"}
+        </Button>
+        {userDetails ? (
+          <UserDetails
+            userDetails={userDetails}
+            setUserDetails={setUserDetails}
+            setSerialNumber={setIdNumber}
+          />
+        ) : null}
+      </Container>
+    </div>
   );
 }
 
@@ -202,6 +213,17 @@ function UserDetails({
   const toast = useToast();
 
   async function checkIn() {
+    if (userDetails.arrears) {
+      toast({
+        title: "Arrears",
+        description: `Unable to check-in! Please clear your arrears of KES ${userDetails.arrears}`,
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+      return;
+    }
+
     try {
       setLoading(true);
       if (!token) {
@@ -257,6 +279,63 @@ function UserDetails({
     }
   }
 
+  async function clearArrears() {
+    try {
+      setLoading(true);
+      if (!token) {
+        toast({
+          title: "Error",
+          description: "Must be authenticated to update member details",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        return;
+      }
+      const url = `/members/${userDetails.id}`;
+      const response = await updateArrears(url, token);
+      console.log(response);
+      setLoading(false);
+      setMessage("");
+      toast({
+        title: "Arrears Cleared",
+        description: `Successfully cleared ${userDetails.fullName}'s arrears`,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      setUserDetails({ ...userDetails, arrears: 0 });
+    } catch (err: any) {
+      console.log(err);
+      if (err.code === "ERR_NETWORK") {
+        setError("Error clearing arrears! Try again later");
+        toast({
+          title: "Error.",
+          description: "Error clearing arrears! Try again later",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      } else {
+        const error =
+          err.response?.data?.message ??
+          "Error clearing arrears! Try again later";
+        setError(error);
+        toast({
+          title: "Error.",
+          description: error,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const { arrears } = userDetails;
+
   return (
     <div className="mt-[20px]">
       <TextContainer>
@@ -283,18 +362,40 @@ function UserDetails({
           {userDetails.position}
         </Text>
       </TextContainer>
-      <Button
-        isLoading={loading}
-        colorScheme="primary"
-        variant="solid"
-        marginTop="20px"
-        width="100%"
-        backgroundColor="#179847"
-        onClick={checkIn}
-        isDisabled={message ? true : false}
-      >
-        Check In
-      </Button>
+      {arrears ? (
+        <TextContainer>
+          <Text>
+            <strong>Arrears: </strong>
+            {arrears}
+          </Text>
+        </TextContainer>
+      ) : null}
+      {arrears ? null : (
+        <Button
+          isLoading={loading}
+          colorScheme="primary"
+          variant="solid"
+          marginTop="20px"
+          width="100%"
+          backgroundColor="#179847"
+          onClick={checkIn}
+        >
+          Check In
+        </Button>
+      )}
+      {arrears ? (
+        <Button
+          isLoading={loading}
+          colorScheme="primary"
+          variant="solid"
+          marginTop="20px"
+          width="100%"
+          backgroundColor="#FACC00"
+          onClick={clearArrears}
+        >
+          Clear Arrears
+        </Button>
+      ) : null}
       {message ? (
         <Container centerContent marginTop="10px">
           <Text color="green" as="b" paddingStart="5px" textAlign="center">
