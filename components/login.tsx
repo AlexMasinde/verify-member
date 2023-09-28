@@ -79,7 +79,7 @@ export default function Login() {
   }
 
   return (
-    <div className="w-full h-[100vh] flex flex-col items-center justify-center">
+    <div className="w-full flex flex-col items-center justify-center">
       <div className="md:w-[400px] md:shadow-md rounded-[8px] p-[20px] w-full md:h-fit">
         <div className="flex flex-col items-center">
           <Image
